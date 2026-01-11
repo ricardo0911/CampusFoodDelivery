@@ -1,11 +1,11 @@
-# 校园订餐系统
+# CampusFoodDelivery 校园订餐系统
 
 基于 **Spring Boot + Vue3 + Uniapp** 的校园订餐系统，整合"管理员-商家-顾客"三方角色功能。
 
 ## 📁 项目结构
 
 ```
-campus-ordering-system/
+CampusFoodDelivery/
 ├── backend/              # Spring Boot 后端
 │   ├── src/main/java/    # Java源码
 │   └── src/main/resources/

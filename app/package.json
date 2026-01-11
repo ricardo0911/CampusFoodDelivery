@@ -9,8 +9,8 @@
         "dev:h5": "uni -p h5"
     },
     "dependencies": {
-        "vue": "^3.4.0",
-        "pinia": "^2.1.7"
+        "pinia": "^2.1.7",
+        "vue": "^3.4.0"
     },
     "devDependencies": {
         "@dcloudio/types": "^3.4.8",
@@ -21,6 +21,7 @@
         "@dcloudio/uni-mp-weixin": "3.0.0-4020420240722001",
         "@dcloudio/vite-plugin-uni": "3.0.0-4020420240722001",
         "@vitejs/plugin-vue": "^5.0.0",
+        "sharp": "^0.34.5",
         "vite": "^5.2.8"
     }
 }

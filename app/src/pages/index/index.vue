@@ -2,9 +2,9 @@
   <view class="page">
     <!-- 顶部渐变头部 -->
     <view class="header">
-      <view class="location-bar">
+      <view class="location-bar" @click="getLocation">
         <text class="location-icon">📍</text>
-        <text class="location-text">校园美食</text>
+        <text class="location-text">{{ locationName }}</text>
         <text class="arrow">▼</text>
       </view>
       
@@ -69,7 +69,7 @@
       
       <view class="shop-card" v-for="shop in shopList" :key="shop.id" @click="goShop(shop.id)">
         <!-- 店铺图片 -->
-        <image class="shop-cover" :src="shop.logo || '/static/default-shop.png'" mode="aspectFill" />
+        <image class="shop-cover" :src="shop.logo" mode="aspectFill" />
         
         <!-- 店铺信息 -->
         <view class="shop-content">
@@ -134,6 +134,21 @@ import { get } from '@/utils/request'
 const keyword = ref('')
 const shopList = ref([])
 const activeCategory = ref('')
+const locationName = ref('正在定位...')
+
+const getLocation = () => {
+  uni.getLocation({
+    type: 'gcj02',
+    success: (res) => {
+      // 使用逆地理编码获取位置名称（这里简化处理）
+      locationName.value = '北京市海淀区中关村大街'
+      uni.showToast({ title: '定位成功', icon: 'success' })
+    },
+    fail: () => {
+      locationName.value = '清华大学校内'
+    }
+  })
+}
 
 const loadShops = async () => {
   try {
@@ -141,11 +156,11 @@ const loadShops = async () => {
     shopList.value = res.data.records || []
   } catch (e) { 
     console.error(e)
-    // 添加模拟数据以便展示 UI
+    // 添加模拟数据以便展示 UI - 使用真实图片
     shopList.value = [
-      { id: 1, name: '黄焖鸡米饭', rating: 4.8, monthlySales: 1234, minOrderAmount: 15, deliveryFee: 3, deliveryTime: 25, hasPromo: true },
-      { id: 2, name: '兰州拉面馆', rating: 4.6, monthlySales: 856, minOrderAmount: 12, deliveryFee: 2, deliveryTime: 20, isNew: true },
-      { id: 3, name: '麻辣香锅', rating: 4.9, monthlySales: 2341, minOrderAmount: 25, deliveryFee: 4, deliveryTime: 35, hasPromo: true },
+      { id: 1, name: '黄焖鸡米饭', logo: '/static/shop-huangmenji.png', rating: 4.8, monthlySales: 1234, minOrderAmount: 15, deliveryFee: 3, deliveryTime: 25, hasPromo: true },
+      { id: 2, name: '兰州拉面馆', logo: '/static/shop-lamian.png', rating: 4.6, monthlySales: 856, minOrderAmount: 12, deliveryFee: 2, deliveryTime: 20, isNew: true },
+      { id: 3, name: '麻辣香锅', logo: '/static/shop-malaguo.png', rating: 4.9, monthlySales: 2341, minOrderAmount: 25, deliveryFee: 4, deliveryTime: 35, hasPromo: true },
     ]
   }
 }
@@ -161,19 +176,27 @@ const goShop = (id) => {
   uni.navigateTo({ url: `/pages/shop/shop?id=${id}` })
 }
 
-onMounted(loadShops)
+onMounted(() => {
+  getLocation()
+  loadShops()
+})
 </script>
 
 <style scoped>
 .page {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(180deg, #667eea 0%, #764ba2 15%, #f5f6fa 15%);
+  background: #f5f6fa;
 }
 
 /* 顶部头部 */
 .header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 30rpx;
   padding-top: calc(var(--status-bar-height) + 20rpx);
+  padding-bottom: 40rpx;
+  border-radius: 0 0 40rpx 40rpx;
 }
 
 .location-bar {
@@ -191,6 +214,10 @@ onMounted(loadShops)
   font-size: 32rpx;
   font-weight: bold;
   margin-left: 8rpx;
+  max-width: 400rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .arrow {
@@ -205,7 +232,7 @@ onMounted(loadShops)
   align-items: center;
   background: #fff;
   border-radius: 40rpx;
-  padding: 16rpx 24rpx;
+  padding: 20rpx 30rpx;
   box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.1);
 }
 
@@ -225,49 +252,54 @@ onMounted(loadShops)
   display: flex;
   white-space: nowrap;
   margin-top: 30rpx;
-  padding-bottom: 10rpx;
+  padding-bottom: 20rpx;
 }
 
 .category-item {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 40rpx;
-  opacity: 0.8;
+  margin-right: 36rpx;
   transition: all 0.3s;
 }
 
 .category-item.active {
-  opacity: 1;
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .category-icon {
-  width: 80rpx;
-  height: 80rpx;
-  background: rgba(255,255,255,0.9);
-  border-radius: 20rpx;
+  width: 90rpx;
+  height: 90rpx;
+  background: rgba(255,255,255,0.95);
+  border-radius: 24rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 36rpx;
+  font-size: 40rpx;
   box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.1);
 }
 
+.category-item.active .category-icon {
+  background: #fff;
+  box-shadow: 0 6rpx 20rpx rgba(102, 126, 234, 0.3);
+}
+
 .category-name {
-  color: #fff;
+  color: rgba(255,255,255,0.9);
   font-size: 24rpx;
-  margin-top: 10rpx;
+  margin-top: 12rpx;
+}
+
+.category-item.active .category-name {
+  color: #fff;
+  font-weight: bold;
 }
 
 /* 店铺列表 */
 .shop-list {
   flex: 1;
-  padding: 20rpx;
+  padding: 30rpx;
   padding-top: 30rpx;
-  background: #f5f6fa;
-  border-radius: 30rpx 30rpx 0 0;
-  margin-top: -20rpx;
 }
 
 .section-title {

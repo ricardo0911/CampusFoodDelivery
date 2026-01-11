@@ -134,23 +134,11 @@ import { get } from '@/utils/request'
 const keyword = ref('')
 const shopList = ref([])
 const activeCategory = ref('')
-const locationName = ref('点击定位')
+const locationName = ref('点击选择位置')
 const latitude = ref(0)
 const longitude = ref(0)
 
-// 根据经纬度判断城市（简化版）
-const getCityName = (lat, lng) => {
-  // 广州附近
-  if (lat > 22.5 && lat < 24.0 && lng > 112.5 && lng < 114.5) return '广州市'
-  // 北京附近
-  if (lat > 39.5 && lat < 40.5 && lng > 115.5 && lng < 117.5) return '北京市'
-  // 上海附近
-  if (lat > 30.5 && lat < 31.5 && lng > 121.0 && lng < 122.0) return '上海市'
-  // 深圳附近
-  if (lat > 22.0 && lat < 23.0 && lng > 113.5 && lng < 114.5) return '深圳市'
-  return '当前位置'
-}
-
+// 获取当前位置后自动打开地图选择
 const getLocation = () => {
   uni.getLocation({
     type: 'gcj02',
@@ -158,33 +146,46 @@ const getLocation = () => {
     success: (res) => {
       latitude.value = res.latitude
       longitude.value = res.longitude
-      // 根据经纬度显示城市名称
-      locationName.value = getCityName(res.latitude, res.longitude)
-      uni.showToast({ title: '定位成功', icon: 'success' })
+      // 自动打开地图选择器获取详细地址
+      openLocationPicker()
     },
     fail: (err) => {
       console.log('定位失败:', err)
-      locationName.value = '点击选择位置'
+      // 直接打开地图选择器
+      openLocationPicker()
     }
   })
 }
 
-// 选择位置（可以获取真实地址）
-const chooseLocation = () => {
+// 打开地图选择器（支持全国任意位置）
+const openLocationPicker = () => {
   uni.chooseLocation({
     latitude: latitude.value || undefined,
     longitude: longitude.value || undefined,
     success: (res) => {
-      locationName.value = res.name || res.address || getCityName(res.latitude, res.longitude)
+      // 显示用户选择的地址名称
+      locationName.value = res.name || res.address || '已选位置'
       latitude.value = res.latitude
       longitude.value = res.longitude
-      uni.showToast({ title: '位置已更新', icon: 'success' })
     },
-    fail: () => {
-      // 如果 chooseLocation 失败，尝试 getLocation
-      getLocation()
+    fail: (err) => {
+      console.log('选择位置失败:', err)
+      if (latitude.value && longitude.value) {
+        locationName.value = '当前位置'
+      }
     }
   })
+}
+
+// 点击位置栏时调用
+const chooseLocation = () => {
+  if (latitude.value && longitude.value) {
+    // 已有位置，直接打开选择器
+    openLocationPicker()
+  } else {
+    // 没有位置，先定位再选择
+    getLocation()
+  }
 }
 
 const loadShops = async () => {

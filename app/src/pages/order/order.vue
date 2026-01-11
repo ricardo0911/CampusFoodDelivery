@@ -119,28 +119,33 @@ const loadOrders = async () => {
   try {
     const params = currentTab.value !== null ? { status: currentTab.value } : {}
     const res = await get('/customer/order/list', params)
-    orderList.value = res.data || []
+    if (res.data && res.data.length > 0) {
+      orderList.value = res.data
+    } else {
+      loadMockOrders()
+    }
   } catch (e) {
-    console.error(e)
-    // 模拟数据
-    orderList.value = [
-      { 
-        id: 1, shopName: '黄焖鸡米饭', status: 4, payAmount: 56.00, 
-        createTime: '2024-01-15 12:30',
-        items: [{ name: '招牌黄焖鸡', quantity: 2, price: 28, image: '/static/shop1.jpg' }]
-      },
-      { 
-        id: 2, shopName: '兰州拉面馆', status: 3, payAmount: 23.00, 
-        createTime: '2024-01-15 11:20',
-        items: [{ name: '牛肉拉面', quantity: 1, price: 18, image: '/static/shop2.jpg' }, { name: '凉菜', quantity: 1, price: 5, image: '/static/shop1.jpg' }]
-      },
-      { 
-        id: 3, shopName: '麻辣香锅', status: 0, payAmount: 89.00, 
-        createTime: '2024-01-15 10:00',
-        items: [{ name: '经典麻辣锅', quantity: 1, price: 68, image: '/static/shop3.jpg' }, { name: '米饭', quantity: 2, price: 4, image: '/static/shop1.jpg' }]
-      },
-    ]
+    console.log('使用演示数据')
+    loadMockOrders()
   }
+}
+
+const loadMockOrders = () => {
+  const allOrders = [
+    { id: 1, shopName: '黄焖鸡米饭', status: 4, payAmount: 56.00, createTime: '2024-01-15 12:30', items: [{ name: '招牌黄焖鸡', quantity: 2, price: 28, image: '/static/shop1.jpg' }] },
+    { id: 2, shopName: '兰州拉面馆', status: 3, payAmount: 23.00, createTime: '2024-01-15 11:20', items: [{ name: '牛肉拉面', quantity: 1, price: 18, image: '/static/shop2.jpg' }, { name: '凉菜', quantity: 1, price: 5, image: '/static/shop1.jpg' }] },
+    { id: 3, shopName: '麻辣香锅', status: 0, payAmount: 89.00, createTime: '2024-01-15 10:00', items: [{ name: '经典麻辣锅', quantity: 1, price: 68, image: '/static/shop3.jpg' }] },
+    { id: 4, shopName: '肯德基', status: 2, payAmount: 42.00, createTime: '2024-01-15 09:30', items: [{ name: '香辣鸡腿堡', quantity: 2, price: 18, image: '/static/shop1.jpg' }] },
+    { id: 5, shopName: '蜜雪冰城', status: 1, payAmount: 18.00, createTime: '2024-01-15 08:45', items: [{ name: '珍珠奶茶', quantity: 2, price: 9, image: '/static/shop2.jpg' }] },
+  ]
+  
+  if (currentTab.value !== null) {
+    orderList.value = allOrders.filter(o => o.status === currentTab.value)
+  } else {
+    orderList.value = allOrders
+  }
+  
+  uni.showToast({ title: '演示模式', icon: 'none', duration: 1500 })
 }
 
 const changeTab = (val) => {

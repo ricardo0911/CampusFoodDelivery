@@ -257,9 +257,12 @@ onMounted(() => {
 .page {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background: #f5f6fa;
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  background-color: #f5f5f5;
 }
+
 
 /* 顶部头部 - 温暖的食物主题色 */
 .header {
@@ -370,6 +373,8 @@ onMounted(() => {
 /* 店铺列表 */
 .shop-list {
   flex: 1;
+  width: 100%;
+  box-sizing: border-box;
   padding: 30rpx;
   padding-top: 30rpx;
 }

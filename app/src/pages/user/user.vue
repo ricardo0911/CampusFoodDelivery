@@ -182,7 +182,7 @@ onMounted(loadUserInfo)
   left: 0;
   right: 0;
   height: 320rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
   border-radius: 0 0 40rpx 40rpx;
 }
 

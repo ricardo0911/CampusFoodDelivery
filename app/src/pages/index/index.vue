@@ -376,7 +376,7 @@ onMounted(() => {
 }
 
 .shop-badge {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
   color: #fff;
   font-size: 20rpx;
   padding: 6rpx 14rpx;
@@ -473,7 +473,7 @@ onMounted(() => {
 
 .feature-tag {
   font-size: 20rpx;
-  color: #667eea;
+  color: #ff6b35;
   background: #f0f3ff;
   padding: 6rpx 12rpx;
   border-radius: 8rpx;

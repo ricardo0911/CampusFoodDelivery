@@ -335,7 +335,7 @@ onMounted(() => {
 }
 
 .shop-badge {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
   color: #fff;
   font-size: 20rpx;
   padding: 8rpx 16rpx;
@@ -411,7 +411,7 @@ onMounted(() => {
   transform: translateY(-50%);
   width: 6rpx;
   height: 40rpx;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
   border-radius: 0 6rpx 6rpx 0;
 }
 
@@ -421,7 +421,7 @@ onMounted(() => {
 }
 
 .category-tab.active .category-name {
-  color: #667eea;
+  color: #ff6b35;
   font-weight: bold;
 }
 
@@ -572,7 +572,7 @@ onMounted(() => {
 }
 
 .plus-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
   color: #fff;
 }
 
@@ -608,7 +608,7 @@ onMounted(() => {
   position: relative;
   width: 90rpx;
   height: 90rpx;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -660,7 +660,7 @@ onMounted(() => {
 }
 
 .checkout-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
   color: #fff;
   padding: 20rpx 50rpx;
   border-radius: 40rpx;

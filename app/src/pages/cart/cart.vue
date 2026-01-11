@@ -267,8 +267,8 @@ onMounted(loadCart)
 }
 
 .shop-check.checked, .item-check.checked, .check-box.checked {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  border-color: #667eea;
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  border-color: #ff6b35;
 }
 
 .shop-name {
@@ -358,7 +358,7 @@ onMounted(loadCart)
 }
 
 .qty-btn.plus {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
   color: #fff;
 }
 
@@ -426,7 +426,7 @@ onMounted(loadCart)
 }
 
 .empty-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
   color: #fff;
   padding: 24rpx 80rpx;
   border-radius: 50rpx;
@@ -491,7 +491,7 @@ onMounted(loadCart)
 }
 
 .checkout-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
   color: #fff;
   padding: 20rpx 50rpx;
   border-radius: 50rpx;

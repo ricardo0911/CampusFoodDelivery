@@ -233,7 +233,7 @@ onMounted(loadOrders)
 }
 
 .tab-item.active .tab-text {
-  color: #667eea;
+  color: #ff6b35;
   font-weight: bold;
 }
 
@@ -242,7 +242,7 @@ onMounted(loadOrders)
   bottom: 8rpx;
   width: 40rpx;
   height: 6rpx;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
   border-radius: 3rpx;
 }
 
@@ -288,7 +288,7 @@ onMounted(loadOrders)
 }
 
 .order-status.status-0 { color: #ff9500; }
-.order-status.status-1 { color: #667eea; }
+.order-status.status-1 { color: #ff6b35; }
 .order-status.status-2 { color: #52c41a; }
 .order-status.status-3 { color: #1890ff; }
 .order-status.status-4 { color: #52c41a; }
@@ -383,7 +383,7 @@ onMounted(loadOrders)
 }
 
 .action-btn.primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
   color: #fff;
 }
 
@@ -417,7 +417,7 @@ onMounted(loadOrders)
 }
 
 .empty-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
   color: #fff;
   padding: 24rpx 80rpx;
   border-radius: 50rpx;

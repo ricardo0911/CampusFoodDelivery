@@ -1,22 +1,36 @@
 <template>
   <view class="container">
+    <view class="logo-area">
+      <view class="logo-icon">🍜</view>
+      <text class="logo-title">校园订餐</text>
+      <text class="logo-subtitle">美食触手可及</text>
+    </view>
+    
     <view class="login-box">
-      <text class="title">校园订餐</text>
-      <text class="subtitle">登录后享受便捷订餐服务</text>
+      <button class="wechat-btn" @click="wechatLogin">
+        <text class="wechat-icon">💚</text>
+        <text>微信一键登录</text>
+      </button>
+      
+      <view class="divider">
+        <view class="divider-line"></view>
+        <text class="divider-text">或</text>
+        <view class="divider-line"></view>
+      </view>
       
       <view class="form">
         <view class="input-group">
-          <text class="label">用户名</text>
+          <text class="input-icon">👤</text>
           <input class="input" v-model="form.username" placeholder="请输入用户名" />
         </view>
         <view class="input-group">
-          <text class="label">密码</text>
+          <text class="input-icon">🔒</text>
           <input class="input" v-model="form.password" type="password" placeholder="请输入密码" />
         </view>
-        
         <view class="login-btn" @click="handleLogin">登 录</view>
-        <view class="register-link" @click="goRegister">没有账号？立即注册</view>
       </view>
+      
+      <text class="agreement">登录即表示同意《用户协议》和《隐私政策》</text>
     </view>
   </view>
 </template>
@@ -43,8 +57,13 @@ const handleLogin = async () => {
   } catch (e) { console.error(e) }
 }
 
-const goRegister = () => {
-  uni.showToast({ title: '暂不支持注册，请联系管理员', icon: 'none' })
+const wechatLogin = () => {
+  uni.setStorageSync('token', 'wx-mock-token-123')
+  uni.setStorageSync('userInfo', { nickname: '微信用户', phone: '138****8888' })
+  uni.showToast({ title: '登录成功', icon: 'success' })
+  setTimeout(() => {
+    uni.switchTab({ url: '/pages/index/index' })
+  }, 1000)
 }
 </script>
 
@@ -52,56 +71,27 @@ const goRegister = () => {
 .container {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffc107 100%);
   padding: 40rpx;
 }
-.login-box {
-  width: 100%;
-  background: #fff;
-  border-radius: 24rpx;
-  padding: 60rpx 40rpx;
-}
-.title {
-  font-size: 48rpx;
-  font-weight: bold;
-  text-align: center;
-  color: #333;
-}
-.subtitle {
-  font-size: 26rpx;
-  color: #999;
-  text-align: center;
-  margin-top: 16rpx;
-}
-.form { margin-top: 60rpx; }
-.input-group { margin-bottom: 30rpx; }
-.label { font-size: 28rpx; color: #666; margin-bottom: 16rpx; display: block; }
-.input {
-  width: 100%;
-  height: 90rpx;
-  background: #f5f5f5;
-  border-radius: 45rpx;
-  padding: 0 30rpx;
-  font-size: 28rpx;
-}
-.login-btn {
-  width: 100%;
-  height: 90rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 45rpx;
-  color: #fff;
-  font-size: 32rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 40rpx;
-}
-.register-link {
-  text-align: center;
-  margin-top: 30rpx;
-  font-size: 26rpx;
-  color: #667eea;
-}
+.logo-area { display: flex; flex-direction: column; align-items: center; margin-bottom: 60rpx; }
+.logo-icon { font-size: 100rpx; margin-bottom: 20rpx; }
+.logo-title { font-size: 56rpx; font-weight: bold; color: #fff; }
+.logo-subtitle { font-size: 28rpx; color: rgba(255,255,255,0.9); margin-top: 10rpx; }
+.login-box { width: 100%; background: #fff; border-radius: 32rpx; padding: 50rpx 40rpx; box-shadow: 0 20rpx 60rpx rgba(0,0,0,0.15); }
+.wechat-btn { width: 100%; height: 100rpx; background: linear-gradient(135deg, #07c160, #10b981); border-radius: 50rpx; color: #fff; font-size: 34rpx; font-weight: bold; display: flex; align-items: center; justify-content: center; border: none; }
+.wechat-btn::after { border: none; }
+.wechat-icon { font-size: 40rpx; margin-right: 16rpx; }
+.divider { display: flex; align-items: center; margin: 40rpx 0; }
+.divider-line { flex: 1; height: 1rpx; background: #e0e0e0; }
+.divider-text { padding: 0 30rpx; color: #999; font-size: 26rpx; }
+.form { margin-top: 20rpx; }
+.input-group { display: flex; align-items: center; background: #f8f8f8; border-radius: 50rpx; padding: 0 30rpx; margin-bottom: 24rpx; }
+.input-icon { font-size: 32rpx; margin-right: 20rpx; }
+.input { flex: 1; height: 90rpx; font-size: 28rpx; background: transparent; }
+.login-btn { width: 100%; height: 90rpx; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 45rpx; color: #fff; font-size: 32rpx; font-weight: bold; display: flex; align-items: center; justify-content: center; margin-top: 20rpx; }
+.agreement { display: block; text-align: center; font-size: 22rpx; color: #999; margin-top: 30rpx; }
 </style>

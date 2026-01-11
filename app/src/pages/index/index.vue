@@ -216,13 +216,14 @@ onMounted(() => {
   background: #f5f6fa;
 }
 
-/* 顶部头部 */
+/* 顶部头部 - 温暖的食物主题色 */
 .header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffc107 100%);
   padding: 30rpx;
   padding-top: calc(var(--status-bar-height) + 20rpx);
   padding-bottom: 40rpx;
   border-radius: 0 0 40rpx 40rpx;
+  box-shadow: 0 8rpx 30rpx rgba(255, 107, 53, 0.3);
 }
 
 .location-bar {

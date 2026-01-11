@@ -15,8 +15,8 @@ const request = (options) => {
                 if (res.data.code === 200) {
                     resolve(res.data)
                 } else if (res.data.code === 401) {
-                    uni.removeStorageSync('token')
-                    uni.navigateTo({ url: '/pages/login/login' })
+                    // uni.removeStorageSync('token')
+                    // uni.navigateTo({ url: '/pages/login/login' })
                     reject(res.data)
                 } else {
                     uni.showToast({ title: res.data.message, icon: 'none' })

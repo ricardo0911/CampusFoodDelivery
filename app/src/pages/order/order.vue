@@ -125,17 +125,17 @@ const loadOrders = async () => {
       { 
         id: 1, shopName: '黄焖鸡米饭', status: 4, payAmount: 56.00, 
         createTime: '2024-01-15 12:30',
-        items: [{ name: '招牌黄焖鸡', quantity: 2, price: 28 }]
+        items: [{ name: '招牌黄焖鸡', quantity: 2, price: 28, image: '/static/shop1.jpg' }]
       },
       { 
         id: 2, shopName: '兰州拉面馆', status: 3, payAmount: 23.00, 
         createTime: '2024-01-15 11:20',
-        items: [{ name: '牛肉拉面', quantity: 1, price: 18 }, { name: '凉菜', quantity: 1, price: 5 }]
+        items: [{ name: '牛肉拉面', quantity: 1, price: 18, image: '/static/shop2.jpg' }, { name: '凉菜', quantity: 1, price: 5, image: '/static/shop1.jpg' }]
       },
       { 
         id: 3, shopName: '麻辣香锅', status: 0, payAmount: 89.00, 
         createTime: '2024-01-15 10:00',
-        items: [{ name: '经典麻辣锅', quantity: 1, price: 68 }, { name: '米饭', quantity: 2, price: 4 }]
+        items: [{ name: '经典麻辣锅', quantity: 1, price: 68, image: '/static/shop3.jpg' }, { name: '米饭', quantity: 2, price: 4, image: '/static/shop1.jpg' }]
       },
     ]
   }

@@ -148,8 +148,9 @@ const loadCart = async () => {
     console.error(e)
     // 模拟数据
     cartList.value = [
-      { id: 1, dishName: '招牌黄焖鸡', dishImage: '', unitPrice: 28, quantity: 2, selected: true },
-      { id: 2, dishName: '扬州炒饭', dishImage: '', unitPrice: 15, quantity: 1, selected: true },
+      { id: 1, dishName: '招牌黄焖鸡', dishImage: '/static/shop1.jpg', unitPrice: 28, quantity: 2, selected: true, spec: '微辣' },
+      { id: 2, dishName: '扬州炒饭', dishImage: '/static/shop2.jpg', unitPrice: 15, quantity: 1, selected: true },
+      { id: 3, dishName: '冰镇可乐', dishImage: '/static/shop3.jpg', unitPrice: 5, quantity: 2, selected: true },
     ]
   }
 }

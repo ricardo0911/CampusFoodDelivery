@@ -12,20 +12,30 @@ const request = (options) => {
                 'Content-Type': 'application/json'
             },
             success: (res) => {
-                if (res.data.code === 200) {
+                // 处理 HTTP 状态码错误 (404, 500 等)
+                if (res.statusCode >= 400) {
+                    console.log('API 错误:', res.statusCode, options.url)
+                    reject({ code: res.statusCode, message: '网络请求失败' })
+                    return
+                }
+
+                // 处理业务逻辑
+                if (res.data && res.data.code === 200) {
                     resolve(res.data)
-                } else if (res.data.code === 401) {
-                    // uni.removeStorageSync('token')
-                    // uni.navigateTo({ url: '/pages/login/login' })
+                } else if (res.data && res.data.code === 401) {
+                    // 未授权，静默处理，让页面使用模拟数据
                     reject(res.data)
                 } else {
-                    uni.showToast({ title: res.data.message, icon: 'none' })
-                    reject(res.data)
+                    // 其他错误，只有在有 message 时才显示 toast
+                    if (res.data && res.data.message) {
+                        uni.showToast({ title: res.data.message, icon: 'none' })
+                    }
+                    reject(res.data || { code: -1, message: '未知错误' })
                 }
             },
             fail: (err) => {
-                uni.showToast({ title: '网络错误', icon: 'none' })
-                reject(err)
+                console.log('网络错误:', err)
+                reject({ code: -1, message: '网络错误' })
             }
         })
     })

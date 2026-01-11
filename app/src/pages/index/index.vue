@@ -276,7 +276,15 @@ const loadMockShops = () => {
 
 const selectCategory = (category) => {
   activeCategory.value = category
-  loadShops()
+  uni.showToast({ title: '正在切换...', icon: 'none' })
+  
+  if (category) {
+    // 强制使用模拟数据进行筛选
+    loadMockShops()
+  } else {
+    // 全部 tab，重新加载
+    loadShops()
+  }
 }
 
 const search = () => { loadShops() }

@@ -300,89 +300,85 @@ onMounted(loadOrders)
   padding: 20rpx 0;
 }
 
-/* 页面整体背景 */
+/* ================================
+   现代订单页面样式 - 美团/饿了么风格
+   ================================ */
+
+/* 页面容器 */
 .page {
-  background-color: #f5f7fa;
+  background: linear-gradient(180deg, #fff8f5 0%, #f8f9fa 100%);
   min-height: 100vh;
 }
 
 /* 头部 */
 .header {
   background: #fff;
-  padding: 20rpx 30rpx;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  padding: 30rpx;
+  text-align: center;
+  border-bottom: 1rpx solid #f0f0f0;
 }
 
 .header-title {
-  font-size: 34rpx;
-  font-weight: bold;
-  color: #1a1a2e;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 2rpx;
 }
 
-/* 标签栏 */
+/* Tab 选项卡 */
 .tabs-wrapper {
   background: #fff;
-  padding: 0 10rpx;
+  padding: 20rpx 0;
   margin-bottom: 20rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.03);
 }
 
 .tabs {
   display: flex;
-  padding: 10rpx 20rpx;
+  padding: 0 20rpx;
+  gap: 10rpx;
 }
 
 .tab-item {
-  flex: none;
-  padding: 16rpx 30rpx;
   position: relative;
-  margin-right: 10rpx;
+  padding: 18rpx 32rpx;
+  border-radius: 30rpx;
+  background: #f5f5f5;
+  transition: all 0.3s ease;
+}
+
+.tab-item.active {
+  background: #ff6b35;
 }
 
 .tab-text {
-  font-size: 28rpx;
+  font-size: 26rpx;
   color: #666;
   font-weight: 500;
-  transition: all 0.3s;
+  white-space: nowrap;
 }
 
-.active .tab-text {
-  color: #ff6b35;
-  font-size: 30rpx;
-  font-weight: bold;
+.tab-item.active .tab-text {
+  color: #fff;
+  font-weight: 600;
 }
 
 .tab-indicator {
-  position: absolute;
-  bottom: 6rpx;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 40rpx;
-  height: 6rpx;
-  background: linear-gradient(90deg, #ff6b35, #ff9f43);
-  border-radius: 6rpx;
-  box-shadow: 0 2rpx 6rpx rgba(255, 107, 53, 0.3);
+  display: none;
 }
 
-/* 订单列表 */
+/* 订单列表容器 */
 .order-content {
-  padding: 0 24rpx;
+  padding: 20rpx 24rpx;
   box-sizing: border-box;
 }
 
+/* 订单卡片 */
 .order-card {
   background: #fff;
-  border-radius: 24rpx;
-  padding: 30rpx;
+  border-radius: 20rpx;
   margin-bottom: 24rpx;
-  box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.05);
-  transition: transform 0.2s;
-}
-
-.order-card:active {
-  transform: scale(0.99);
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.04);
 }
 
 /* 订单头部 */
@@ -390,77 +386,101 @@ onMounted(loadOrders)
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24rpx;
-  padding-bottom: 20rpx;
-  border-bottom: 1rpx solid #f9f9f9;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f8f8f8;
 }
 
 .shop-info {
   display: flex;
   align-items: center;
+  gap: 12rpx;
 }
 
 .shop-icon {
-  font-size: 32rpx;
-  margin-right: 12rpx;
-  background: #fff5f0;
-  width: 50rpx;
-  height: 50rpx;
+  width: 44rpx;
+  height: 44rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12rpx;
+  font-size: 24rpx;
+  background: none;
 }
 
 .shop-name {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #333;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #222;
 }
 
+/* 订单状态胶囊 */
 .order-status {
-  font-size: 26rpx;
-  font-weight: 500;
+  font-size: 24rpx;
+  font-weight: 600;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
 }
 
-.status-0 { color: #ff6b35; } /* 待支付 */
-.status-1 { color: #2196f3; } /* 待接单 */
-.status-2 { color: #ff9800; } /* 制作中 */
-.status-3 { color: #2196f3; } /* 配送中 */
-.status-4 { color: #4caf50; } /* 已完成 */
-.status-5 { color: #999; }    /* 已取消 */
+.status-0 { 
+  color: #ff6b35; 
+  background: #fff5f0;
+}
+.status-1 { 
+  color: #3b82f6; 
+  background: #eff6ff;
+}
+.status-2 { 
+  color: #f59e0b; 
+  background: #fffbeb;
+}
+.status-3 { 
+  color: #06b6d4; 
+  background: #ecfeff;
+}
+.status-4 { 
+  color: #10b981; 
+  background: #ecfdf5;
+}
+.status-5 { 
+  color: #9ca3af; 
+  background: #f3f4f6;
+}
 
-/* 商品详情 */
+/* 商品区域 */
+.order-goods {
+  padding: 20rpx 24rpx;
+}
+
 .goods-item {
   display: flex;
-  align-items: flex-start;
-  margin-bottom: 24rpx;
-  background: #fcfcfc;
-  padding: 16rpx;
-  border-radius: 16rpx;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f8f8f8;
+}
+
+.goods-item:last-child {
+  border-bottom: none;
 }
 
 .goods-image {
-  width: 110rpx;
-  height: 110rpx;
+  width: 100rpx;
+  height: 100rpx;
   border-radius: 12rpx;
   margin-right: 20rpx;
   flex-shrink: 0;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
+  background: #f5f5f5;
 }
 
 .goods-info {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 110rpx;
-  padding-right: 20rpx;
+  min-height: 100rpx;
+  justify-content: center;
 }
 
 .goods-row {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
 }
@@ -469,36 +489,30 @@ onMounted(loadOrders)
   font-size: 28rpx;
   color: #333;
   font-weight: 500;
-  margin-bottom: 8rpx;
-  margin-right: 20rpx;
+  flex: 1;
+  margin-right: 16rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .goods-price {
-  font-size: 30rpx;
-  color: #1a1a2e;
-  font-weight: bold;
-  text-align: left;
-  flex-shrink: 0;
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 600;
 }
 
 .goods-spec {
   font-size: 24rpx;
   color: #999;
-  background: #f0f0f0;
-  padding: 2rpx 10rpx;
-  border-radius: 6rpx;
-  align-self: flex-start;
-  margin-top: 10rpx;
+  margin-top: 8rpx;
 }
 
 .goods-more {
   font-size: 24rpx;
   color: #999;
   text-align: center;
-  padding: 10rpx 0;
-  background: #f9f9f9;
-  border-radius: 8rpx;
-  margin-top: 10rpx;
+  padding: 16rpx 0;
 }
 
 /* 订单金额 */
@@ -506,7 +520,8 @@ onMounted(loadOrders)
   display: flex;
   align-items: baseline;
   justify-content: flex-end;
-  padding: 20rpx 0 10rpx;
+  padding: 16rpx 24rpx;
+  background: #fafafa;
 }
 
 .amount-label {
@@ -516,60 +531,69 @@ onMounted(loadOrders)
 }
 
 .amount-symbol {
-  font-size: 24rpx;
-  color: #1a1a2e;
-  font-weight: bold;
+  font-size: 26rpx;
+  color: #ff6b35;
+  font-weight: 600;
 }
 
 .amount-value {
   font-size: 36rpx;
-  color: #1a1a2e;
-  font-weight: 800;
+  color: #ff6b35;
+  font-weight: 700;
 }
 
-/* 订单时间与操作 */
+/* 订单时间 */
 .order-time {
+  display: flex;
   font-size: 24rpx;
-  color: #bbb;
-  padding-bottom: 20rpx;
-  text-align: right;
-  border-bottom: 1rpx solid #f5f5f5;
-  margin-bottom: 20rpx;
+  color: #999;
+  padding: 16rpx 24rpx;
 }
 
+.time-label {
+  color: #bbb;
+}
+
+.time-value {
+  color: #999;
+}
+
+/* 订单操作按钮 */
 .order-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 20rpx;
+  gap: 16rpx;
+  padding: 16rpx 24rpx 24rpx;
 }
 
 .action-btn {
-  padding: 14rpx 36rpx;
-  border-radius: 40rpx;
+  padding: 16rpx 32rpx;
+  border-radius: 32rpx;
   font-size: 26rpx;
   font-weight: 500;
-  transition: all 0.3s;
+  transition: all 0.2s ease;
 }
 
 .action-btn.primary {
-  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8f5e 100%);
   color: #fff;
-  box-shadow: 0 6rpx 16rpx rgba(255, 107, 53, 0.25);
+  box-shadow: 0 4rpx 12rpx rgba(255, 107, 53, 0.3);
 }
 
 .action-btn.primary:active {
-  transform: translateY(2rpx);
-  box-shadow: 0 2rpx 8rpx rgba(255, 107, 53, 0.2);
+  transform: scale(0.98);
+  opacity: 0.9;
 }
 
 .action-btn.outline {
-  border: 1rpx solid #ddd;
+  border: 2rpx solid #e5e5e5;
   color: #666;
   background: #fff;
 }
 
 .action-btn.outline:active {
   background: #f5f5f5;
+  border-color: #ddd;
 }
 
 /* 空状态 */
@@ -582,34 +606,34 @@ onMounted(loadOrders)
 
 .empty-icon {
   font-size: 120rpx;
-  margin-bottom: 30rpx;
-  opacity: 0.8;
+  margin-bottom: 32rpx;
+  opacity: 0.6;
 }
 
 .empty-title {
-  font-size: 34rpx;
+  font-size: 32rpx;
   color: #333;
-  font-weight: bold;
-  margin-bottom: 16rpx;
+  font-weight: 600;
+  margin-bottom: 12rpx;
 }
 
 .empty-desc {
-  font-size: 28rpx;
+  font-size: 26rpx;
   color: #999;
-  margin-bottom: 50rpx;
+  margin-bottom: 48rpx;
 }
 
 .empty-btn {
-  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8f5e 100%);
   color: #fff;
   padding: 24rpx 80rpx;
-  border-radius: 50rpx;
-  font-size: 30rpx;
-  font-weight: bold;
-  box-shadow: 0 8rpx 20rpx rgba(255, 107, 53, 0.3);
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  box-shadow: 0 8rpx 24rpx rgba(255, 107, 53, 0.3);
 }
 
 .safe-bottom {
-  height: 120rpx;
+  height: 100rpx;
 }
 </style>

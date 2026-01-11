@@ -2,7 +2,7 @@
   <view class="page">
     <!-- 顶部渐变头部 -->
     <view class="header">
-      <view class="location-bar" @click="getLocation">
+      <view class="location-bar" @click="chooseLocation">
         <text class="location-icon">📍</text>
         <text class="location-text">{{ locationName }}</text>
         <text class="arrow">▼</text>
@@ -134,18 +134,44 @@ import { get } from '@/utils/request'
 const keyword = ref('')
 const shopList = ref([])
 const activeCategory = ref('')
-const locationName = ref('正在定位...')
+const locationName = ref('点击定位')
+const latitude = ref(0)
+const longitude = ref(0)
 
 const getLocation = () => {
   uni.getLocation({
     type: 'gcj02',
+    isHighAccuracy: true,
     success: (res) => {
-      // 使用逆地理编码获取位置名称（这里简化处理）
-      locationName.value = '北京市海淀区中关村大街'
+      latitude.value = res.latitude
+      longitude.value = res.longitude
+      // 显示经纬度（微信小程序需要申请逆地理编码API才能获取地址）
+      locationName.value = `${res.latitude.toFixed(4)}, ${res.longitude.toFixed(4)}`
       uni.showToast({ title: '定位成功', icon: 'success' })
+      
+      // 尝试使用 chooseLocation 让用户选择位置
+      // uni.chooseLocation 可以获取真实地址名称
+    },
+    fail: (err) => {
+      console.log('定位失败:', err)
+      locationName.value = '定位失败，点击重试'
+      uni.showToast({ title: '定位失败', icon: 'none' })
+    }
+  })
+}
+
+// 选择位置（可以获取真实地址）
+const chooseLocation = () => {
+  uni.chooseLocation({
+    success: (res) => {
+      locationName.value = res.name || res.address || '未知位置'
+      latitude.value = res.latitude
+      longitude.value = res.longitude
+      uni.showToast({ title: '位置已更新', icon: 'success' })
     },
     fail: () => {
-      locationName.value = '清华大学校内'
+      // 如果 chooseLocation 失败，尝试 getLocation
+      getLocation()
     }
   })
 }

@@ -4,7 +4,16 @@
         "setting": {
             "urlCheck": false
         },
-        "usingComponents": true
+        "usingComponents": true,
+        "requiredPrivateInfos": [
+            "getLocation",
+            "chooseLocation"
+        ],
+        "permission": {
+            "scope.userLocation": {
+                "desc": "您的位置信息将用于显示附近商家"
+            }
+        }
     },
     "h5": {
         "devServer": {

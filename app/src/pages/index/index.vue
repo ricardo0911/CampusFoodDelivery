@@ -69,7 +69,7 @@
       
       <view class="shop-card" v-for="shop in shopList" :key="shop.id" @click="goShop(shop.id)">
         <!-- 店铺图片 -->
-        <image class="shop-cover" :src="shop.logo" mode="aspectFill" />
+        <image class="shop-cover" :src="shop.logo || '/static/shop' + ((shop.id % 3) + 1) + '.jpg'" mode="aspectFill" />
         
         <!-- 店铺信息 -->
         <view class="shop-content">

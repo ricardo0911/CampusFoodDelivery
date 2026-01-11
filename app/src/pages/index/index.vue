@@ -69,7 +69,8 @@
       
       <view class="shop-card" v-for="shop in shopList" :key="shop.id" @click="goShop(shop.id)">
         <!-- 店铺图片 -->
-        <image class="shop-cover" :src="shop.logo || '/static/shop' + ((shop.id % 3) + 1) + '.jpg'" mode="aspectFill" />
+        <!-- 店铺图片 -->
+        <image class="shop-cover" :src="getShopCover(shop)" mode="aspectFill" />
         
         <!-- 店铺信息 -->
         <view class="shop-content">
@@ -236,6 +237,14 @@ const search = () => { loadShops() }
 
 const goShop = (id) => {
   uni.navigateTo({ url: `/pages/shop/shop?id=${id}` })
+}
+
+// 获取店铺封面图
+const getShopCover = (shop) => {
+  if (shop.logo) return shop.logo
+  // 确保ID为数字，如果没有ID则默认为1
+  const id = Number(shop.id) || 1
+  return `/static/shop${(id % 3) + 1}.jpg`
 }
 
 onMounted(() => {

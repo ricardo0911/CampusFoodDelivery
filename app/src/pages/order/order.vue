@@ -40,10 +40,12 @@
           <view class="goods-item" v-for="(item, idx) in (order.items || []).slice(0, 2)" :key="idx">
             <image class="goods-image" :src="item.image || '/static/default-dish.jpg'" mode="aspectFill" />
             <view class="goods-info">
-              <text class="goods-name">{{ item.name }}</text>
+              <view class="goods-row">
+                <text class="goods-name">{{ item.name }}</text>
+                <text class="goods-price">¥{{ item.price }}</text>
+              </view>
               <text class="goods-spec">x{{ item.quantity }}</text>
             </view>
-            <text class="goods-price">¥{{ item.price }}</text>
           </view>
           <view class="goods-more" v-if="(order.items || []).length > 2">
             共{{ order.items.length }}件商品
@@ -456,11 +458,27 @@ onMounted(loadOrders)
   padding-right: 20rpx;
 }
 
+.goods-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
 .goods-name {
   font-size: 28rpx;
   color: #333;
   font-weight: 500;
   margin-bottom: 8rpx;
+  margin-right: 20rpx;
+}
+
+.goods-price {
+  font-size: 30rpx;
+  color: #1a1a2e;
+  font-weight: bold;
+  text-align: left;
+  flex-shrink: 0;
 }
 
 .goods-spec {
@@ -470,15 +488,7 @@ onMounted(loadOrders)
   padding: 2rpx 10rpx;
   border-radius: 6rpx;
   align-self: flex-start;
-}
-
-.goods-price {
-  font-size: 30rpx;
-  color: #1a1a2e;
-  font-weight: bold;
-  min-width: 80rpx;
-  text-align: right;
-  flex-shrink: 0;
+  margin-top: 10rpx;
 }
 
 .goods-more {

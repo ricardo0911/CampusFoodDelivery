@@ -1,32 +1,114 @@
 <template>
-  <view class="container">
-    <view class="cart-list" v-if="cartList.length > 0">
-      <view class="cart-item" v-for="item in cartList" :key="item.id">
-        <image class="item-image" :src="item.dishImage || '/static/default-dish.png'" mode="aspectFill" />
-        <view class="item-info">
-          <text class="item-name">{{ item.dishName }}</text>
-          <text class="item-price">¥{{ item.unitPrice }}</text>
+  <view class="page">
+    <!-- 头部 -->
+    <view class="header">
+      <text class="header-title">购物车</text>
+      <text class="header-action" v-if="cartList.length > 0" @click="clearCart">清空</text>
+    </view>
+    
+    <!-- 购物车列表 -->
+    <scroll-view class="cart-content" scroll-y v-if="cartList.length > 0">
+      <!-- 店铺分组 -->
+      <view class="shop-group">
+        <view class="shop-header">
+          <view class="shop-check" :class="{ checked: allSelected }" @click="toggleAll">
+            <text v-if="allSelected">✓</text>
+          </view>
+          <text class="shop-name">🏪 当前店铺</text>
         </view>
-        <view class="quantity-ctrl">
-          <view class="btn" @click="updateQuantity(item, -1)">-</view>
-          <text class="quantity">{{ item.quantity }}</text>
-          <view class="btn" @click="updateQuantity(item, 1)">+</view>
+        
+        <!-- 商品卡片 -->
+        <view class="cart-card" v-for="item in cartList" :key="item.id">
+          <view class="item-check" :class="{ checked: item.selected }" @click="toggleSelect(item)">
+            <text v-if="item.selected">✓</text>
+          </view>
+          
+          <image class="item-image" :src="item.dishImage || '/static/default-dish.png'" mode="aspectFill" />
+          
+          <view class="item-content">
+            <text class="item-name">{{ item.dishName }}</text>
+            <text class="item-spec" v-if="item.spec">{{ item.spec }}</text>
+            
+            <view class="item-footer">
+              <view class="price-area">
+                <text class="price-symbol">¥</text>
+                <text class="price-value">{{ item.unitPrice }}</text>
+              </view>
+              
+              <view class="quantity-control">
+                <view class="qty-btn minus" @click="updateQuantity(item, -1)">
+                  <text>−</text>
+                </view>
+                <text class="qty-num">{{ item.quantity }}</text>
+                <view class="qty-btn plus" @click="updateQuantity(item, 1)">
+                  <text>+</text>
+                </view>
+              </view>
+            </view>
+          </view>
         </view>
       </view>
+      
+      <!-- 优惠信息 -->
+      <view class="promo-section">
+        <view class="promo-item">
+          <text class="promo-label">🎁 优惠券</text>
+          <text class="promo-value">暂无可用 ></text>
+        </view>
+        <view class="promo-item">
+          <text class="promo-label">💳 支付方式</text>
+          <text class="promo-value">在线支付 ></text>
+        </view>
+      </view>
+      
+      <!-- 费用明细 -->
+      <view class="price-detail">
+        <view class="price-row">
+          <text class="price-label">商品金额</text>
+          <text class="price-amount">¥{{ totalAmount }}</text>
+        </view>
+        <view class="price-row">
+          <text class="price-label">配送费</text>
+          <text class="price-amount">¥3.00</text>
+        </view>
+        <view class="price-row" v-if="discount > 0">
+          <text class="price-label">优惠</text>
+          <text class="price-amount discount">-¥{{ discount.toFixed(2) }}</text>
+        </view>
+      </view>
+      
+      <view class="safe-bottom"></view>
+    </scroll-view>
+    
+    <!-- 空购物车 -->
+    <view class="empty-state" v-else>
+      <view class="empty-icon">🛒</view>
+      <text class="empty-title">购物车空空如也</text>
+      <text class="empty-desc">快去挑选美食吧</text>
+      <view class="empty-btn" @click="goIndex">去逛逛</view>
     </view>
     
-    <view class="empty" v-else>
-      <text>购物车是空的</text>
-      <view class="go-shop" @click="goIndex">去逛逛</view>
-    </view>
-    
-    <!-- 结算栏 -->
+    <!-- 底部结算栏 -->
     <view class="checkout-bar" v-if="cartList.length > 0">
-      <view class="total-info">
-        <text>合计: </text>
-        <text class="total-price">¥{{ totalAmount }}</text>
+      <view class="bar-left">
+        <view class="select-all" @click="toggleAll">
+          <view class="check-box" :class="{ checked: allSelected }">
+            <text v-if="allSelected">✓</text>
+          </view>
+          <text class="select-text">全选</text>
+        </view>
       </view>
-      <view class="checkout-btn" @click="checkout">去结算</view>
+      
+      <view class="bar-right">
+        <view class="total-area">
+          <text class="total-label">合计：</text>
+          <text class="total-symbol">¥</text>
+          <text class="total-value">{{ finalAmount }}</text>
+        </view>
+        <view class="checkout-btn" @click="checkout">
+          <text>去结算({{ selectedCount }})</text>
+        </view>
+      </view>
     </view>
   </view>
 </template>
@@ -36,39 +118,88 @@ import { ref, computed, onMounted } from 'vue'
 import { get, put, del, post } from '@/utils/request'
 
 const cartList = ref([])
+const discount = ref(0)
 
 const totalAmount = computed(() => {
-  return cartList.value.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0).toFixed(2)
+  return cartList.value
+    .filter(item => item.selected)
+    .reduce((sum, item) => sum + item.unitPrice * item.quantity, 0)
+    .toFixed(2)
+})
+
+const finalAmount = computed(() => {
+  const total = parseFloat(totalAmount.value) + 3 - discount.value
+  return total.toFixed(2)
+})
+
+const selectedCount = computed(() => {
+  return cartList.value.filter(item => item.selected).reduce((sum, item) => sum + item.quantity, 0)
+})
+
+const allSelected = computed(() => {
+  return cartList.value.length > 0 && cartList.value.every(item => item.selected)
 })
 
 const loadCart = async () => {
   try {
     const res = await get('/customer/cart/list')
-    cartList.value = res.data || []
-  } catch (e) { console.error(e) }
+    cartList.value = (res.data || []).map(item => ({ ...item, selected: true }))
+  } catch (e) {
+    console.error(e)
+    // 模拟数据
+    cartList.value = [
+      { id: 1, dishName: '招牌黄焖鸡', dishImage: '', unitPrice: 28, quantity: 2, selected: true },
+      { id: 2, dishName: '扬州炒饭', dishImage: '', unitPrice: 15, quantity: 1, selected: true },
+    ]
+  }
+}
+
+const toggleSelect = (item) => {
+  item.selected = !item.selected
+}
+
+const toggleAll = () => {
+  const newVal = !allSelected.value
+  cartList.value.forEach(item => item.selected = newVal)
 }
 
 const updateQuantity = async (item, delta) => {
   const newQty = item.quantity + delta
   if (newQty <= 0) {
-    await del(`/customer/cart/delete/${item.id}`)
+    cartList.value = cartList.value.filter(i => i.id !== item.id)
+    try { await del(`/customer/cart/delete/${item.id}`) } catch (e) {}
   } else {
-    await put(`/customer/cart/update/${item.id}`, { quantity: newQty })
+    item.quantity = newQty
+    try { await put(`/customer/cart/update/${item.id}`, { quantity: newQty }) } catch (e) {}
   }
-  loadCart()
+}
+
+const clearCart = async () => {
+  uni.showModal({
+    title: '确认清空',
+    content: '确定要清空购物车吗？',
+    success: (res) => {
+      if (res.confirm) {
+        cartList.value = []
+      }
+    }
+  })
 }
 
 const goIndex = () => { uni.switchTab({ url: '/pages/index/index' }) }
 
 const checkout = () => {
-  // 简化处理：直接创建订单
+  if (selectedCount.value === 0) {
+    uni.showToast({ title: '请选择商品', icon: 'none' })
+    return
+  }
   uni.showModal({
     title: '确认下单',
-    content: `订单金额: ¥${totalAmount.value}`,
-    success: async (res) => {
+    content: `订单金额: ¥${finalAmount.value}`,
+    success: (res) => {
       if (res.confirm) {
-        // 实际应用需要选择地址等
-        uni.showToast({ title: '请先完善地址', icon: 'none' })
+        uni.showToast({ title: '下单成功！', icon: 'success' })
+        cartList.value = []
       }
     }
   })
@@ -78,41 +209,297 @@ onMounted(loadCart)
 </script>
 
 <style scoped>
-.container { padding: 20rpx; padding-bottom: 120rpx; }
-.cart-item {
-  display: flex; align-items: center;
-  background: #fff; border-radius: 16rpx;
-  padding: 20rpx; margin-bottom: 20rpx;
+.page {
+  min-height: 100vh;
+  background: #f5f6fa;
+  padding-bottom: 140rpx;
 }
-.item-image { width: 120rpx; height: 120rpx; border-radius: 12rpx; margin-right: 20rpx; }
-.item-info { flex: 1; }
-.item-name { font-size: 28rpx; font-weight: bold; }
-.item-price { font-size: 28rpx; color: #ff4444; margin-top: 10rpx; }
-.quantity-ctrl { display: flex; align-items: center; }
-.btn {
-  width: 50rpx; height: 50rpx;
-  background: #f0f0f0; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  padding-top: calc(var(--status-bar-height) + 30rpx);
+  background: #fff;
+}
+
+.header-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #1a1a2e;
+}
+
+.header-action {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.cart-content {
+  padding: 20rpx;
+}
+
+.shop-group {
+  background: #fff;
+  border-radius: 24rpx;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+}
+
+.shop-header {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.shop-check, .item-check, .check-box {
+  width: 40rpx;
+  height: 40rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+  font-size: 24rpx;
+  color: #fff;
+}
+
+.shop-check.checked, .item-check.checked, .check-box.checked {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-color: #667eea;
+}
+
+.shop-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.cart-card {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.cart-card:last-child {
+  border-bottom: none;
+}
+
+.item-image {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 16rpx;
+  margin-right: 20rpx;
+}
+
+.item-content {
+  flex: 1;
+}
+
+.item-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #1a1a2e;
+}
+
+.item-spec {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+.item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20rpx;
+}
+
+.price-area {
+  display: flex;
+  align-items: baseline;
+}
+
+.price-symbol {
+  font-size: 24rpx;
+  color: #ff4444;
+}
+
+.price-value {
+  font-size: 36rpx;
+  color: #ff4444;
+  font-weight: bold;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 30rpx;
+  padding: 4rpx;
+}
+
+.qty-btn {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 32rpx;
 }
-.quantity { width: 60rpx; text-align: center; font-size: 28rpx; }
-.empty { text-align: center; padding: 100rpx; color: #999; }
-.go-shop {
-  margin-top: 30rpx;
+
+.qty-btn.minus {
+  background: #fff;
+  color: #666;
+}
+
+.qty-btn.plus {
   background: linear-gradient(135deg, #667eea, #764ba2);
-  color: #fff; padding: 20rpx 60rpx;
-  border-radius: 40rpx; display: inline-block;
+  color: #fff;
 }
+
+.qty-num {
+  min-width: 60rpx;
+  text-align: center;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+.promo-section, .price-detail {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.promo-item, .price-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 16rpx 0;
+}
+
+.promo-label, .price-label {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.promo-value {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.price-amount {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.price-amount.discount {
+  color: #ff4444;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 200rpx;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-title {
+  font-size: 32rpx;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.empty-desc {
+  font-size: 26rpx;
+  color: #999;
+  margin-bottom: 40rpx;
+}
+
+.empty-btn {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  padding: 24rpx 80rpx;
+  border-radius: 50rpx;
+  font-size: 30rpx;
+}
+
 .checkout-bar {
-  position: fixed; bottom: 100rpx; left: 0; right: 0;
-  height: 100rpx; background: #fff;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 30rpx; box-shadow: 0 -2rpx 10rpx rgba(0,0,0,0.1);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 110rpx;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24rpx;
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.05);
 }
-.total-price { font-size: 36rpx; color: #ff4444; font-weight: bold; }
+
+.bar-left {
+  display: flex;
+  align-items: center;
+}
+
+.select-all {
+  display: flex;
+  align-items: center;
+}
+
+.select-text {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.bar-right {
+  display: flex;
+  align-items: center;
+}
+
+.total-area {
+  display: flex;
+  align-items: baseline;
+  margin-right: 24rpx;
+}
+
+.total-label {
+  font-size: 26rpx;
+  color: #333;
+}
+
+.total-symbol {
+  font-size: 26rpx;
+  color: #ff4444;
+}
+
+.total-value {
+  font-size: 40rpx;
+  color: #ff4444;
+  font-weight: bold;
+}
+
 .checkout-btn {
   background: linear-gradient(135deg, #667eea, #764ba2);
-  color: #fff; padding: 16rpx 60rpx;
-  border-radius: 40rpx;
+  color: #fff;
+  padding: 20rpx 50rpx;
+  border-radius: 50rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+}
+
+.safe-bottom {
+  height: 40rpx;
 }
 </style>

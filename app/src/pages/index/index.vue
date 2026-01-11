@@ -138,6 +138,19 @@ const locationName = ref('点击定位')
 const latitude = ref(0)
 const longitude = ref(0)
 
+// 根据经纬度判断城市（简化版）
+const getCityName = (lat, lng) => {
+  // 广州附近
+  if (lat > 22.5 && lat < 24.0 && lng > 112.5 && lng < 114.5) return '广州市'
+  // 北京附近
+  if (lat > 39.5 && lat < 40.5 && lng > 115.5 && lng < 117.5) return '北京市'
+  // 上海附近
+  if (lat > 30.5 && lat < 31.5 && lng > 121.0 && lng < 122.0) return '上海市'
+  // 深圳附近
+  if (lat > 22.0 && lat < 23.0 && lng > 113.5 && lng < 114.5) return '深圳市'
+  return '当前位置'
+}
+
 const getLocation = () => {
   uni.getLocation({
     type: 'gcj02',
@@ -145,17 +158,13 @@ const getLocation = () => {
     success: (res) => {
       latitude.value = res.latitude
       longitude.value = res.longitude
-      // 显示经纬度（微信小程序需要申请逆地理编码API才能获取地址）
-      locationName.value = `${res.latitude.toFixed(4)}, ${res.longitude.toFixed(4)}`
+      // 根据经纬度显示城市名称
+      locationName.value = getCityName(res.latitude, res.longitude)
       uni.showToast({ title: '定位成功', icon: 'success' })
-      
-      // 尝试使用 chooseLocation 让用户选择位置
-      // uni.chooseLocation 可以获取真实地址名称
     },
     fail: (err) => {
       console.log('定位失败:', err)
-      locationName.value = '定位失败，点击重试'
-      uni.showToast({ title: '定位失败', icon: 'none' })
+      locationName.value = '点击选择位置'
     }
   })
 }
@@ -163,8 +172,10 @@ const getLocation = () => {
 // 选择位置（可以获取真实地址）
 const chooseLocation = () => {
   uni.chooseLocation({
+    latitude: latitude.value || undefined,
+    longitude: longitude.value || undefined,
     success: (res) => {
-      locationName.value = res.name || res.address || '未知位置'
+      locationName.value = res.name || res.address || getCityName(res.latitude, res.longitude)
       latitude.value = res.latitude
       longitude.value = res.longitude
       uni.showToast({ title: '位置已更新', icon: 'success' })

@@ -198,9 +198,12 @@ const loadShops = async () => {
     }
 
     if (validRecords.length > 0) {
-      // 如果选中了分类，但后端返回的数据里明显没有这个分类的数据（假设后端数据有category字段）
-      // 这里做个简单判断：如果后端数据少于1条且选了分类，可能体验不好，也降级
-      shopList.value = validRecords
+      // 如果选中了分类，但后端返回的数据太少（少于2条），体验不好，也降级
+      if (activeCategory.value && validRecords.length < 2) {
+        loadMockShops()
+      } else {
+        shopList.value = validRecords
+      }
     } else {
       // 接口返回空，或失败，使用模拟数据
       loadMockShops()
@@ -223,6 +226,14 @@ const loadMockShops = () => {
     { id: 6, name: '肯德基', logo: '/static/shop3.jpg', rating: 4.4, monthlySales: 5620, minOrderAmount: 20, deliveryFee: 5, deliveryTime: 30, isNew: true, category: '快餐' },
     { id: 7, name: '蜜雪冰城', logo: '/static/shop1.jpg', rating: 4.8, monthlySales: 8900, minOrderAmount: 8, deliveryFee: 0, deliveryTime: 15, hasPromo: true, category: '饮品' },
     { id: 8, name: '瑞幸咖啡', logo: '/static/shop2.jpg', rating: 4.6, monthlySales: 4560, minOrderAmount: 15, deliveryFee: 2, deliveryTime: 20, category: '饮品' },
+    { id: 13, name: '东北饺子馆', logo: '/static/shop1.jpg', rating: 4.7, monthlySales: 1200, minOrderAmount: 20, deliveryFee: 3, deliveryTime: 30, category: '中餐' },
+    { id: 14, name: '川菜馆', logo: '/static/shop2.jpg', rating: 4.8, monthlySales: 1500, minOrderAmount: 30, deliveryFee: 4, deliveryTime: 40, hasPromo: true, category: '中餐' },
+    { id: 15, name: '必胜客', logo: '/static/shop3.jpg', rating: 4.5, monthlySales: 2200, minOrderAmount: 0, deliveryFee: 9, deliveryTime: 35, category: '快餐' },
+    { id: 16, name: '星巴克', logo: '/static/shop1.jpg', rating: 4.9, monthlySales: 3100, minOrderAmount: 25, deliveryFee: 0, deliveryTime: 25, category: '饮品' },
+    { id: 17, name: '满记甜品', logo: '/static/shop2.jpg', rating: 4.7, monthlySales: 900, minOrderAmount: 25, deliveryFee: 3, deliveryTime: 35, category: '甜点' },
+    { id: 18, name: '鲜芋仙', logo: '/static/shop3.jpg', rating: 4.6, monthlySales: 1100, minOrderAmount: 20, deliveryFee: 3, deliveryTime: 30, category: '甜点' },
+    { id: 19, name: '好利来', logo: '/static/shop1.jpg', rating: 4.8, monthlySales: 2500, minOrderAmount: 30, deliveryFee: 0, deliveryTime: 40, hasPromo: true, category: '甜点' },
+    { id: 20, name: '一点点', logo: '/static/shop2.jpg', rating: 4.5, monthlySales: 4200, minOrderAmount: 15, deliveryFee: 0, deliveryTime: 20, category: '饮品' },
   ]
   
   // 根据城市添加特色店铺

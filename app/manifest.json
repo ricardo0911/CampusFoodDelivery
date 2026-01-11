@@ -1,0 +1,20 @@
+{
+    "mp-weixin": {
+        "appid": "wx1234567890abcdef",
+        "setting": {
+            "urlCheck": false
+        },
+        "usingComponents": true
+    },
+    "h5": {
+        "devServer": {
+            "port": 5173,
+            "proxy": {
+                "/api": {
+                    "target": "http://localhost:8080",
+                    "changeOrigin": true
+                }
+            }
+        }
+    }
+}

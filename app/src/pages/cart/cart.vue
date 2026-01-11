@@ -247,76 +247,124 @@ onMounted(loadCart)
   margin-bottom: 20rpx;
 }
 
+/* 购物车头部 */
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 30rpx;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.02);
+}
+
+.header-left {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #1a1a2e;
+}
+
+.edit-btn {
+  font-size: 28rpx;
+  color: #666;
+  padding: 8rpx 20rpx;
+}
+
+/* 购物车列表 */
+.cart-list {
+  padding: 24rpx;
+  padding-bottom: 120rpx;
+}
+
+.shop-card {
+  background: #fff;
+  border-radius: 24rpx;
+  margin-bottom: 24rpx;
+  overflow: hidden;
+  box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.05);
+}
+
 .shop-header {
   display: flex;
   align-items: center;
-  padding: 24rpx;
-  border-bottom: 1rpx solid #f0f0f0;
+  padding: 24rpx 30rpx;
+  border-bottom: 1rpx solid #f9f9f9;
 }
 
 .shop-check, .item-check, .check-box {
-  width: 40rpx;
-  height: 40rpx;
-  border: 2rpx solid #ddd;
+  width: 42rpx;
+  height: 42rpx;
+  border: 2rpx solid #e0e0e0;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 16rpx;
+  margin-right: 20rpx;
   font-size: 24rpx;
   color: #fff;
+  transition: all 0.2s;
+  flex-shrink: 0;
 }
 
 .shop-check.checked, .item-check.checked, .check-box.checked {
   background: linear-gradient(135deg, #ff6b35, #f7931e);
-  border-color: #ff6b35;
+  border-color: transparent;
+  box-shadow: 0 4rpx 10rpx rgba(255, 107, 53, 0.3);
 }
 
 .shop-name {
-  font-size: 28rpx;
+  font-size: 30rpx;
   font-weight: bold;
-  color: #333;
+  color: #1a1a2e;
 }
 
-.cart-card {
+.cart-item {
   display: flex;
   align-items: center;
-  padding: 24rpx;
-  border-bottom: 1rpx solid #f0f0f0;
-}
-
-.cart-card:last-child {
-  border-bottom: none;
+  padding: 30rpx;
+  background: #fff;
 }
 
 .item-image {
-  width: 160rpx;
-  height: 160rpx;
+  width: 140rpx;
+  height: 140rpx;
   border-radius: 16rpx;
-  margin-right: 20rpx;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.06);
 }
 
 .item-content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 140rpx;
 }
 
 .item-name {
   font-size: 30rpx;
   font-weight: bold;
   color: #1a1a2e;
+  margin-bottom: 8rpx;
 }
 
 .item-spec {
   font-size: 24rpx;
   color: #999;
-  margin-top: 8rpx;
+  align-self: flex-start;
+  background: #f5f5f5;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
 }
 
 .item-footer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-top: 20rpx;
+  align-items: flex-end;
+  margin-top: 16rpx;
 }
 
 .price-area {
@@ -327,40 +375,48 @@ onMounted(loadCart)
 .price-symbol {
   font-size: 24rpx;
   color: #ff4444;
+  font-weight: bold;
 }
 
 .price-value {
-  font-size: 36rpx;
+  font-size: 34rpx;
   color: #ff4444;
-  font-weight: bold;
+  font-weight: 800;
 }
 
 .quantity-control {
   display: flex;
   align-items: center;
-  background: #f5f5f5;
-  border-radius: 30rpx;
-  padding: 4rpx;
+  background: #f7f7f7;
+  border-radius: 36rpx;
+  padding: 6rpx;
 }
 
 .qty-btn {
-  width: 52rpx;
-  height: 52rpx;
+  width: 48rpx;
+  height: 48rpx;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 32rpx;
+  transition: all 0.2s;
 }
 
 .qty-btn.minus {
   background: #fff;
   color: #666;
+  box-shadow: 0 2rpx 6rpx rgba(0,0,0,0.05);
 }
 
 .qty-btn.plus {
   background: linear-gradient(135deg, #ff6b35, #f7931e);
   color: #fff;
+  box-shadow: 0 2rpx 8rpx rgba(255, 107, 53, 0.3);
+}
+
+.qty-btn:active {
+  transform: scale(0.9);
 }
 
 .qty-num {
@@ -368,35 +424,25 @@ onMounted(loadCart)
   text-align: center;
   font-size: 28rpx;
   font-weight: bold;
+  color: #333;
 }
 
-.promo-section, .price-detail {
+/* 底部结算栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100rpx;
   background: #fff;
-  border-radius: 24rpx;
-  padding: 24rpx;
-  margin-bottom: 20rpx;
-}
-
-.promo-item, .price-row {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  padding: 16rpx 0;
+  padding: 0 30rpx;
+  box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.05);
+  z-index: 100;
 }
 
-.promo-label, .price-label {
-  font-size: 28rpx;
-  color: #333;
-}
-
-.promo-value {
-  font-size: 28rpx;
-  color: #999;
-}
-
-.price-amount {
-  font-size: 28rpx;
-  color: #333;
-}
 
 .price-amount.discount {
   color: #ff4444;

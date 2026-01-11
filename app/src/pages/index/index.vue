@@ -158,9 +158,9 @@ const loadShops = async () => {
     console.error(e)
     // 添加模拟数据以便展示 UI - 使用真实图片
     shopList.value = [
-      { id: 1, name: '黄焖鸡米饭', logo: '/static/shop-huangmenji.png', rating: 4.8, monthlySales: 1234, minOrderAmount: 15, deliveryFee: 3, deliveryTime: 25, hasPromo: true },
-      { id: 2, name: '兰州拉面馆', logo: '/static/shop-lamian.png', rating: 4.6, monthlySales: 856, minOrderAmount: 12, deliveryFee: 2, deliveryTime: 20, isNew: true },
-      { id: 3, name: '麻辣香锅', logo: '/static/shop-malaguo.png', rating: 4.9, monthlySales: 2341, minOrderAmount: 25, deliveryFee: 4, deliveryTime: 35, hasPromo: true },
+      { id: 1, name: '黄焖鸡米饭', logo: '/static/shop-huangmenji.jpg', rating: 4.8, monthlySales: 1234, minOrderAmount: 15, deliveryFee: 3, deliveryTime: 25, hasPromo: true },
+      { id: 2, name: '兰州拉面馆', logo: '/static/shop-lamian.jpg', rating: 4.6, monthlySales: 856, minOrderAmount: 12, deliveryFee: 2, deliveryTime: 20, isNew: true },
+      { id: 3, name: '麻辣香锅', logo: '/static/shop-malaguo.jpg', rating: 4.9, monthlySales: 2341, minOrderAmount: 25, deliveryFee: 4, deliveryTime: 35, hasPromo: true },
     ]
   }
 }

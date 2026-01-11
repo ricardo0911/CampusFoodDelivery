@@ -2,7 +2,7 @@
   <view class="page">
     <!-- 店铺信息头部 -->
     <view class="shop-header">
-      <image class="shop-banner" :src="shop.banner || shop.logo || '/static/default-shop.png'" mode="aspectFill" />
+      <image class="shop-banner" :src="shop.banner || shop.logo || '/static/default-shop.jpg'" mode="aspectFill" />
       <view class="shop-overlay"></view>
       
       <!-- 返回按钮 -->
@@ -13,7 +13,7 @@
       <!-- 店铺信息卡片 -->
       <view class="shop-card">
         <view class="shop-main">
-          <image class="shop-avatar" :src="shop.logo || '/static/default-shop.png'" mode="aspectFill" />
+          <image class="shop-avatar" :src="shop.logo || '/static/default-shop.jpg'" mode="aspectFill" />
           <view class="shop-info">
             <text class="shop-name">{{ shop.name || '美味餐厅' }}</text>
             <view class="shop-rating">
@@ -71,7 +71,7 @@
           <text class="section-title">{{ currentCategoryName }}</text>
           
           <view v-for="dish in filteredDishes" :key="dish.id" class="dish-card">
-            <image class="dish-image" :src="dish.image || '/static/default-dish.png'" mode="aspectFill" />
+            <image class="dish-image" :src="dish.image || '/static/default-dish.jpg'" mode="aspectFill" />
             
             <view class="dish-content">
               <view class="dish-header">

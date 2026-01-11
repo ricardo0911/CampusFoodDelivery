@@ -38,7 +38,7 @@
         <!-- 订单商品 -->
         <view class="order-goods">
           <view class="goods-item" v-for="(item, idx) in (order.items || []).slice(0, 2)" :key="idx">
-            <image class="goods-image" :src="item.image || '/static/default-dish.png'" mode="aspectFill" />
+            <image class="goods-image" :src="item.image || '/static/default-dish.jpg'" mode="aspectFill" />
             <view class="goods-info">
               <text class="goods-name">{{ item.name }}</text>
               <text class="goods-spec">x{{ item.quantity }}</text>

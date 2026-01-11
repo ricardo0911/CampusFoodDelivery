@@ -23,7 +23,7 @@
             <text v-if="item.selected">✓</text>
           </view>
           
-          <image class="item-image" :src="item.dishImage || '/static/default-dish.png'" mode="aspectFill" />
+          <image class="item-image" :src="item.dishImage || '/static/default-dish.jpg'" mode="aspectFill" />
           
           <view class="item-content">
             <text class="item-name">{{ item.dishName }}</text>

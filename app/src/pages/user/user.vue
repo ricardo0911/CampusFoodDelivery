@@ -6,7 +6,7 @@
       
       <view class="user-card">
         <view class="avatar-wrapper">
-          <image class="avatar" :src="userInfo.avatar || '/static/default-avatar.png'" mode="aspectFill" />
+          <image class="avatar" :src="userInfo.avatar || '/static/default-avatar.jpg'" mode="aspectFill" />
           <view class="vip-badge" v-if="isLogin">VIP</view>
         </view>
         

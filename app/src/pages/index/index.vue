@@ -180,9 +180,16 @@ const chooseLocation = () => {
 }
 
 const loadShops = async () => {
+  // 如果选中了分类，为了演示效果（保证分类筛选有效），直接使用模拟数据
+  // 因为后端接口可能不支持分类筛选
+  if (activeCategory.value) {
+    loadMockShops()
+    return
+  }
+
   try {
     const params = { keyword: keyword.value }
-    if (activeCategory.value) params.category = activeCategory.value
+    // if (activeCategory.value) params.category = activeCategory.value
     
     // 尝试调用接口
     // 如果是点击分类，且处于演示环境，优先检查模拟数据能否满足

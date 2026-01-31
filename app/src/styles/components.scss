@@ -1,0 +1,146 @@
+/**
+ * Campus Food Delivery - Component Styles
+ * 校园订餐小程序组件样式
+ */
+
+@import './design-system.scss';
+
+// 按钮组件
+.c-btn {
+  @include button-base;
+  padding: 0 $space-lg;
+}
+
+.c-btn--primary {
+  background: $gradient-primary;
+  color: #fff;
+  box-shadow: $shadow-primary;
+}
+
+.c-btn--secondary {
+  background: transparent;
+  color: $color-primary;
+  border: 2rpx solid $color-primary;
+}
+
+// 卡片组件
+.c-card {
+  @include card-base;
+  padding: $space-md;
+  margin-bottom: $space-md;
+}
+
+// 商家卡片
+.c-merchant-card {
+  display: flex;
+  gap: $space-md;
+}
+
+.c-merchant-card__image {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: $radius-md;
+  object-fit: cover;
+}
+
+.c-merchant-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.c-merchant-card__name {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+// 商品卡片
+.c-dish-card {
+  display: flex;
+  gap: $space-md;
+}
+
+.c-dish-card__image {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: $radius-md;
+  object-fit: cover;
+}
+
+.c-dish-card__price {
+  @include price-style;
+}
+
+// 标签组件
+.c-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+}
+
+.c-tag--primary {
+  background: rgba(255, 107, 0, 0.1);
+  color: $color-primary;
+}
+
+.c-tag--success {
+  background: rgba(0, 184, 148, 0.1);
+  color: $color-success;
+}
+
+// 输入框
+.c-input {
+  @include input-base;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+// 列表
+.c-list__item {
+  @include flex-between;
+  padding: $space-md;
+  border-bottom: 2rpx solid $color-border;
+}
+
+// 空状态
+.c-empty {
+  @include flex-center;
+  flex-direction: column;
+  padding: $space-2xl $space-md;
+}
+
+// 步进器
+.c-stepper {
+  @include flex-center;
+}
+
+.c-stepper__btn {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  @include flex-center;
+  font-size: 32rpx;
+}
+
+.c-stepper__btn--plus {
+  background: $gradient-primary;
+  color: #fff;
+}
+
+// 购物车浮球
+.c-cart-float {
+  position: fixed;
+  right: $space-md;
+  bottom: 200rpx;
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 50%;
+  background: $gradient-primary;
+  box-shadow: $shadow-float;
+  @include flex-center;
+}

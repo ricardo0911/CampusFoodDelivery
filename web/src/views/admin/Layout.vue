@@ -10,6 +10,10 @@
           <el-icon><DataAnalysis /></el-icon>
           <span>仪表盘</span>
         </el-menu-item>
+        <el-menu-item index="/admin/data-screen">
+          <el-icon><Monitor /></el-icon>
+          <span>数据大屏</span>
+        </el-menu-item>
         <el-menu-item index="/admin/users">
           <el-icon><User /></el-icon>
           <span>用户管理</span>
@@ -21,6 +25,22 @@
         <el-menu-item index="/admin/orders">
           <el-icon><List /></el-icon>
           <span>订单管理</span>
+        </el-menu-item>
+        <el-menu-item index="/admin/announcements">
+          <el-icon><Bell /></el-icon>
+          <span>公告管理</span>
+        </el-menu-item>
+        <el-menu-item index="/admin/activities">
+          <el-icon><Present /></el-icon>
+          <span>活动管理</span>
+        </el-menu-item>
+        <el-menu-item index="/admin/complaints">
+          <el-icon><Warning /></el-icon>
+          <span>投诉处理</span>
+        </el-menu-item>
+        <el-menu-item index="/admin/finance">
+          <el-icon><Money /></el-icon>
+          <span>财务报表</span>
         </el-menu-item>
       </el-menu>
     </el-aside>

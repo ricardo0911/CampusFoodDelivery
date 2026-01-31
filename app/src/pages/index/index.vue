@@ -3,14 +3,21 @@
     <!-- 顶部渐变头部 -->
     <view class="header">
       <view class="location-bar" @click="chooseLocation">
-        <text class="location-icon">📍</text>
+        <view class="location-icon">
+          <text class="location-symbol">◤</text>
+        </view>
         <text class="location-text">{{ locationName }}</text>
-        <text class="arrow">▼</text>
+        <view class="arrow-down"></view>
       </view>
       
       <!-- 搜索栏 -->
       <view class="search-bar">
-        <text class="search-icon">🔍</text>
+        <view class="search-icon-wrap">
+          <view class="search-icon">
+            <view class="search-circle"></view>
+            <view class="search-line"></view>
+          </view>
+        </view>
         <input class="search-input" placeholder="搜索店铺或菜品" v-model="keyword" @confirm="search" />
       </view>
       
@@ -21,106 +28,190 @@
           :class="{ active: activeCategory === '' }" 
           @click="selectCategory('')"
         >
-          <view class="category-icon">🍽️</view>
-          <text class="category-name">全部</text>
+          <view class="category-icon" :class="{ active: activeCategory === '' }">
+            <text class="category-symbol">全部</text>
+          </view>
         </view>
         <view 
           class="category-item" 
           :class="{ active: activeCategory === '快餐' }" 
           @click="selectCategory('快餐')"
         >
-          <view class="category-icon">🍔</view>
-          <text class="category-name">快餐</text>
+          <view class="category-icon" :class="{ active: activeCategory === '快餐' }">
+            <text class="category-symbol">快餐</text>
+          </view>
         </view>
         <view 
           class="category-item" 
           :class="{ active: activeCategory === '中餐' }" 
           @click="selectCategory('中餐')"
         >
-          <view class="category-icon">🍜</view>
-          <text class="category-name">中餐</text>
+          <view class="category-icon" :class="{ active: activeCategory === '中餐' }">
+            <text class="category-symbol">中餐</text>
+          </view>
         </view>
         <view 
           class="category-item" 
           :class="{ active: activeCategory === '饮品' }" 
           @click="selectCategory('饮品')"
         >
-          <view class="category-icon">🧋</view>
-          <text class="category-name">饮品</text>
+          <view class="category-icon" :class="{ active: activeCategory === '饮品' }">
+            <text class="category-symbol">饮品</text>
+          </view>
         </view>
         <view 
           class="category-item" 
           :class="{ active: activeCategory === '甜点' }" 
           @click="selectCategory('甜点')"
         >
-          <view class="category-icon">🍰</view>
-          <text class="category-name">甜点</text>
+          <view class="category-icon" :class="{ active: activeCategory === '甜点' }">
+            <text class="category-symbol">甜点</text>
+          </view>
+        </view>
+        <view 
+          class="category-item" 
+          :class="{ active: activeCategory === '小吃' }" 
+          @click="selectCategory('小吃')"
+        >
+          <view class="category-icon" :class="{ active: activeCategory === '小吃' }">
+            <text class="category-symbol">小吃</text>
+          </view>
         </view>
       </scroll-view>
+    </view>
+    
+    <!-- 快捷功能入口 -->
+    <view class="quick-actions">
+      <view class="action-card random-card" @click="goToRandomPick">
+        <view class="action-icon-bg">
+          <view class="dice-icon">
+            <view class="dice-face">
+              <view class="dot dot-1"></view>
+              <view class="dot dot-2"></view>
+            </view>
+          </view>
+        </view>
+        <view class="action-info">
+          <text class="action-title">今天吃什么</text>
+          <text class="action-desc">转盘随机选</text>
+        </view>
+        <view class="action-arrow"></view>
+      </view>
+      <view class="action-card group-card" @click="goToGroupOrder">
+        <view class="action-icon-bg">
+          <view class="group-icon">
+            <view class="person person-1"></view>
+            <view class="person person-2"></view>
+            <view class="person person-3"></view>
+          </view>
+        </view>
+        <view class="action-info">
+          <text class="action-title">宿舍拼单</text>
+          <text class="action-desc">一起更优惠</text>
+        </view>
+        <view class="action-arrow"></view>
+      </view>
+    </view>
+
+    <!-- 特色功能入口 -->
+    <view class="feature-grid">
+      <view class="feature-item" @click="goToFlashSale">
+        <view class="feature-icon flash-sale">
+          <text class="icon-text">秒</text>
+        </view>
+        <text class="feature-name">限时秒杀</text>
+      </view>
+      <view class="feature-item" @click="goToRanking">
+        <view class="feature-icon ranking">
+          <text class="icon-text">榜</text>
+        </view>
+        <text class="feature-name">美食排行</text>
+      </view>
+      <view class="feature-item" @click="goToMysteryBox">
+        <view class="feature-icon mystery-box">
+          <text class="icon-text">盲</text>
+        </view>
+        <text class="feature-name">美食盲盒</text>
+      </view>
+      <view class="feature-item" @click="goToCommunity">
+        <view class="feature-icon community">
+          <text class="icon-text">社</text>
+        </view>
+        <text class="feature-name">美食社区</text>
+      </view>
+    </view>
+    
+    <!-- 筛选栏 -->
+    <view class="filter-bar">
+      <view class="filter-item active">
+        <text>综合排序</text>
+        <view class="filter-arrow"></view>
+      </view>
+      <view class="filter-item">
+        <text>销量最高</text>
+      </view>
+      <view class="filter-item">
+        <text>距离最近</text>
+      </view>
+      <view class="filter-item">
+        <text>筛选</text>
+        <view class="filter-dots">
+          <view class="dot-item"></view>
+          <view class="dot-item"></view>
+        </view>
+      </view>
     </view>
     
     <!-- 店铺列表 -->
     <scroll-view class="shop-list" scroll-y>
       <!-- 推荐标签 -->
       <view class="section-title">
+        <view class="title-icon"></view>
         <text class="title-text">附近商家</text>
         <text class="title-sub">为您精选优质店铺</text>
       </view>
       
-      <view class="shop-card" v-for="shop in shopList" :key="shop.id" @click="goShop(shop.id)">
-        <!-- 店铺图片 -->
-        <!-- 店铺图片 -->
-        <image class="shop-cover" :src="getShopCover(shop)" mode="aspectFill" />
-        
-        <!-- 店铺信息 -->
-        <view class="shop-content">
-          <view class="shop-header">
-            <text class="shop-name">{{ shop.name }}</text>
-            <view class="shop-badge" v-if="shop.rating >= 4.5">
-              <text>品质</text>
-            </view>
-          </view>
-          
-          <view class="shop-rating">
-            <view class="rating-stars">
-              <text class="star filled" v-for="n in Math.floor(shop.rating || 0)" :key="'f'+n">★</text>
-              <text class="star" v-for="n in (5 - Math.floor(shop.rating || 0))" :key="'e'+n">☆</text>
-            </view>
-            <text class="rating-score">{{ shop.rating || 4.5 }}</text>
-            <text class="sales-text">月售{{ shop.monthlySales || 999 }}+</text>
-          </view>
-          
-          <view class="shop-delivery">
-            <view class="delivery-item">
-              <text class="delivery-label">起送</text>
-              <text class="delivery-value">¥{{ shop.minOrderAmount || 15 }}</text>
-            </view>
-            <view class="delivery-divider"></view>
-            <view class="delivery-item">
-              <text class="delivery-label">配送</text>
-              <text class="delivery-value">¥{{ shop.deliveryFee || 3 }}</text>
-            </view>
-            <view class="delivery-divider"></view>
-            <view class="delivery-item">
-              <text class="delivery-label">时长</text>
-              <text class="delivery-value">{{ shop.deliveryTime || 30 }}分钟</text>
-            </view>
-          </view>
-          
-          <view class="shop-tags">
-            <text class="promo-tag" v-if="shop.hasPromo">满减</text>
-            <text class="new-tag" v-if="shop.isNew">新店</text>
-            <text class="feature-tag">准时达</text>
+      <!-- 骨架屏加载状态 -->
+      <view v-if="isLoading" class="skeleton-list">
+        <view v-for="n in 5" :key="n" class="skeleton-item">
+          <CSkeleton type="image" style="width: 160rpx; height: 160rpx; border-radius: 16rpx;" />
+          <view class="skeleton-content">
+            <CSkeleton type="title" style="width: 60%;" />
+            <CSkeleton type="text" :rows="3" />
           </view>
         </view>
       </view>
       
-      <!-- 空状态 -->
-      <view class="empty-state" v-if="shopList.length === 0">
-        <view class="empty-icon">🏪</view>
-        <text class="empty-text">暂无营业中的店铺</text>
-        <text class="empty-hint">换个时间再来看看吧</text>
+      <!-- 商家列表 -->
+      <view v-else class="merchant-list">
+        <CMerchantCard
+          v-for="shop in shopList"
+          :key="shop.id"
+          :id="shop.id"
+          :name="shop.name"
+          :image="getShopCover(shop)"
+          :rating="shop.rating || 4.5"
+          :monthly-sales="shop.monthlySales || 0"
+          :delivery-time="shop.deliveryTime || 30"
+          :min-order-amount="shop.minOrderAmount || 15"
+          :delivery-fee="shop.deliveryFee || 3"
+          :is-brand="shop.rating >= 4.5"
+          :is-new="shop.isNew"
+          :activities="getShopActivities(shop)"
+          @click="goShop"
+        />
       </view>
+      
+      <!-- 空状态 -->
+      <CEmpty
+        v-if="!isLoading && shopList.length === 0"
+        title="暂无营业中的店铺"
+        description="换个时间再来看看吧"
+      >
+        <template #action>
+          <CButton type="primary" size="sm" @click="refreshShops">刷新试试</CButton>
+        </template>
+      </CEmpty>
       
       <!-- 底部安全区 -->
       <view class="safe-bottom"></view>
@@ -131,6 +222,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { get } from '@/utils/request'
+import { CMerchantCard, CTag, CEmpty, CSkeleton, CButton } from '@/components/common'
 
 const keyword = ref('')
 const shopList = ref([])
@@ -138,6 +230,16 @@ const activeCategory = ref('')
 const locationName = ref('获取位置中...')
 const latitude = ref(0)
 const longitude = ref(0)
+const isLoading = ref(false)
+
+// 格式化销量显示
+const formatSales = (sales) => {
+  if (!sales) return '999+'
+  if (sales >= 10000) {
+    return (sales / 10000).toFixed(1) + '万'
+  }
+  return sales + '+'
+}
 
 // 根据经纬度判断城市
 const getCityFromCoords = (lat, lng) => {
@@ -180,53 +282,47 @@ const chooseLocation = () => {
 }
 
 const loadShops = async () => {
-  // 如果选中了分类，为了演示效果（保证分类筛选有效），直接使用模拟数据
-  // 因为后端接口可能不支持分类筛选
+  isLoading.value = true
+  
   if (activeCategory.value) {
     loadMockShops()
+    isLoading.value = false
     return
   }
 
   try {
     const params = { keyword: keyword.value }
-    // if (activeCategory.value) params.category = activeCategory.value
-    
-    // 尝试调用接口
-    // 如果是点击分类，且处于演示环境，优先检查模拟数据能否满足
-    // 这里我们采取混合策略：先看接口是否返回有效数据
     const res = await get('/public/shop/list', params)
     
     let validRecords = []
     if (res.data && res.data.records) {
-      // 如果后端没有正确过滤（根据参数），我们尝试前端二次验证
-      // 但前提是后端数据有 category 字段。如果没有，就只有相信后端。
-      // 为了演示稳定性，如果选中了分类，且返回的数据为空，我们直接降级到模拟数据
       validRecords = res.data.records
     }
 
     if (validRecords.length > 0) {
-      // 如果选中了分类，但后端返回的数据太少（少于2条），体验不好，也降级
       if (activeCategory.value && validRecords.length < 2) {
         loadMockShops()
       } else {
         shopList.value = validRecords
       }
     } else {
-      // 接口返回空，或失败，使用模拟数据
       loadMockShops()
     }
   } catch (e) { 
-    // 静默处理错误，使用模拟数据
     loadMockShops()
+  } finally {
+    setTimeout(() => {
+      isLoading.value = false
+    }, 500)
   }
 }
 
-// 模拟商家数据 - 支持不同地区
+// 模拟商家数据
 const loadMockShops = () => {
   const city = locationName.value
   const baseShops = [
     { id: 1, name: '黄焖鸡米饭', logo: '/static/shop1.jpg', rating: 4.8, monthlySales: 1234, minOrderAmount: 15, deliveryFee: 3, deliveryTime: 25, hasPromo: true, category: '快餐' },
-    { id: 2, name: '兰州拉面馆', logo: '/static/shop2.jpg', rating: 4.6, monthlySales: 856, minOrderAmount: 12, deliveryFee: 2, deliveryTime: 20, isNew: true, category: '快餐' },
+    { id: 2, name: '兰州拉面馆', logo: '/static/shop2.jpg', rating: 4.6, monthlySales: 856, minOrderAmount: 12, deliveryFee: 0, deliveryTime: 20, isNew: true, category: '快餐' },
     { id: 3, name: '麻辣香锅', logo: '/static/shop3.jpg', rating: 4.9, monthlySales: 2341, minOrderAmount: 25, deliveryFee: 4, deliveryTime: 35, hasPromo: true, category: '中餐' },
     { id: 4, name: '沙县小吃', logo: '/static/shop1.jpg', rating: 4.5, monthlySales: 3200, minOrderAmount: 10, deliveryFee: 2, deliveryTime: 20, hasPromo: true, category: '快餐' },
     { id: 5, name: '杨国福麻辣烫', logo: '/static/shop2.jpg', rating: 4.7, monthlySales: 1890, minOrderAmount: 18, deliveryFee: 3, deliveryTime: 25, category: '快餐' },
@@ -250,7 +346,7 @@ const loadMockShops = () => {
     baseShops.push({ id: 11, name: '喜茶', logo: '/static/shop2.jpg', rating: 4.9, monthlySales: 3200, minOrderAmount: 20, deliveryFee: 0, deliveryTime: 25, category: '饮品' })
     baseShops.push({ id: 12, name: '许留山', logo: '/static/shop3.jpg', rating: 4.7, monthlySales: 1500, minOrderAmount: 25, deliveryFee: 3, deliveryTime: 30, category: '甜点' })
   } else if (city.includes('北京')) {
-    baseShops.push({ id: 9, name: '庆丰包子铺', logo: '/static/shop3.jpg', rating: 4.7, monthlySales: 3400, minOrderAmount: 12, deliveryFee: 2, deliveryTime: 20, category: '中餐' })
+    baseShops.push({ id: 9, name: '庆丰包子铺', logo: '/static/shop3.jpg', rating: 4.7, monthlySales: 3400, minOrderAmount: 12, deliveryFee: 2, deliveryTime: 20, category: '快餐' })
     baseShops.push({ id: 10, name: '北京烤鸭', logo: '/static/shop1.jpg', rating: 4.9, monthlySales: 890, minOrderAmount: 80, deliveryFee: 8, deliveryTime: 45, hasPromo: true, category: '中餐' })
     baseShops.push({ id: 11, name: '稻香村', logo: '/static/shop2.jpg', rating: 4.8, monthlySales: 2800, minOrderAmount: 30, deliveryFee: 5, deliveryTime: 40, category: '甜点' })
   } else if (city.includes('上海')) {
@@ -266,7 +362,6 @@ const loadMockShops = () => {
     baseShops.push({ id: 10, name: '油旋', logo: '/static/shop1.jpg', rating: 4.5, monthlySales: 2100, minOrderAmount: 10, deliveryFee: 2, deliveryTime: 20, isNew: true, category: '快餐' })
   }
   
-  // 过滤逻辑
   if (activeCategory.value) {
     shopList.value = baseShops.filter(shop => shop.category === activeCategory.value)
   } else {
@@ -279,10 +374,8 @@ const selectCategory = (category) => {
   uni.showToast({ title: '正在切换...', icon: 'none' })
   
   if (category) {
-    // 强制使用模拟数据进行筛选
     loadMockShops()
   } else {
-    // 全部 tab，重新加载
     loadShops()
   }
 }
@@ -293,12 +386,68 @@ const goShop = (id) => {
   uni.navigateTo({ url: `/pages/shop/shop?id=${id}` })
 }
 
-// 获取店铺封面图
 const getShopCover = (shop) => {
   if (shop.logo) return shop.logo
-  // 确保ID为数字，如果没有ID则默认为1
   const id = Number(shop.id) || 1
   return `/static/shop${(id % 3) + 1}.jpg`
+}
+
+const goToRandomPick = () => {
+  uni.navigateTo({ url: '/pages/random-pick/random-pick' })
+}
+
+// 获取商家活动列表
+const getShopActivities = (shop) => {
+  const activities = []
+  
+  if (shop.hasPromo) {
+    activities.push({
+      type: 'primary',
+      label: '满减',
+      text: '满30减5，满50减10'
+    })
+  }
+  
+  if (shop.isNew) {
+    activities.push({
+      type: 'success',
+      label: '新客',
+      text: '新用户立减3元'
+    })
+  }
+  
+  activities.push({
+    type: 'default',
+    label: '会员',
+    text: '会员享9折优惠'
+  })
+  
+  return activities
+}
+
+// 刷新店铺列表
+const refreshShops = () => {
+  loadShops()
+}
+
+const goToGroupOrder = () => {
+  uni.navigateTo({ url: '/pages/group-order/group-order' })
+}
+
+const goToFlashSale = () => {
+  uni.navigateTo({ url: '/pages/flash-sale/flash-sale' })
+}
+
+const goToRanking = () => {
+  uni.navigateTo({ url: '/pages/ranking/ranking' })
+}
+
+const goToMysteryBox = () => {
+  uni.navigateTo({ url: '/pages/mystery-box/mystery-box' })
+}
+
+const goToCommunity = () => {
+  uni.navigateTo({ url: '/pages/community/community' })
 }
 
 onMounted(() => {
@@ -311,21 +460,20 @@ onMounted(() => {
 .page {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  width: 100%;
   overflow-x: hidden;
-  background-color: #f5f5f5;
+  background-color: #f8f8f8;
 }
 
-
-/* 顶部头部 - 温暖的食物主题色 */
+/* 顶部头部 - 外卖平台标准橙色系 */
 .header {
-  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffc107 100%);
+  background: linear-gradient(135deg, #FF6B00 0%, #FF9F43 50%, #FFB347 100%);
   padding: 30rpx;
-  padding-top: calc(var(--status-bar-height) + 20rpx);
+  padding-top: 50rpx;
   padding-bottom: 40rpx;
   border-radius: 0 0 40rpx 40rpx;
-  box-shadow: 0 8rpx 30rpx rgba(255, 107, 53, 0.3);
+  box-shadow: 0 8rpx 30rpx rgba(255, 107, 0, 0.25);
 }
 
 .location-bar {
@@ -335,24 +483,38 @@ onMounted(() => {
 }
 
 .location-icon {
-  font-size: 32rpx;
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.location-symbol {
+  font-size: 28rpx;
+  color: #fff;
+  transform: rotate(-15deg);
+  font-weight: bold;
 }
 
 .location-text {
   color: #fff;
   font-size: 32rpx;
   font-weight: bold;
-  margin-left: 8rpx;
+  margin-left: 12rpx;
   max-width: 400rpx;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.arrow {
-  color: rgba(255,255,255,0.8);
-  font-size: 20rpx;
-  margin-left: 8rpx;
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 8rpx solid transparent;
+  border-right: 8rpx solid transparent;
+  border-top: 10rpx solid rgba(255,255,255,0.9);
+  margin-left: 12rpx;
 }
 
 /* 搜索栏 */
@@ -361,15 +523,43 @@ onMounted(() => {
   align-items: center;
   background: #fff;
   border-radius: 40rpx;
-  padding: 24rpx 32rpx;
-  box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.08);
+  padding: 20rpx 32rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.1);
   margin-top: 10rpx;
 }
 
-.search-icon {
-  font-size: 32rpx;
+.search-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-right: 16rpx;
-  color: #999;
+}
+
+.search-icon {
+  position: relative;
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.search-circle {
+  width: 22rpx;
+  height: 22rpx;
+  border: 3rpx solid #999;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.search-line {
+  width: 10rpx;
+  height: 3rpx;
+  background: #999;
+  position: absolute;
+  bottom: 2rpx;
+  right: 0;
+  transform: rotate(45deg);
+  border-radius: 2rpx;
 }
 
 .search-input {
@@ -383,243 +573,351 @@ onMounted(() => {
   display: flex;
   white-space: nowrap;
   margin-top: 36rpx;
-  padding-bottom: 24rpx;
+  padding-bottom: 12rpx;
 }
 
 .category-item {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 24rpx;
-  padding: 12rpx 24rpx;
+  margin-right: 20rpx;
+  padding: 8rpx 16rpx;
   border-radius: 60rpx;
   transition: all 0.3s;
 }
 
 .category-item.active {
-  background: linear-gradient(135deg, #ff6b35, #f7931e);
-  box-shadow: 0 6rpx 16rpx rgba(255, 107, 53, 0.3);
-  transform: translateY(-2rpx);
+  background: rgba(255,255,255,0.25);
 }
 
 .category-icon {
-  width: 80rpx;
-  height: 80rpx;
-  background: #fff;
+  width: 96rpx;
+  height: 96rpx;
+  background: rgba(255,255,255,0.9);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 36rpx;
-  margin-bottom: 8rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+  box-shadow: 0 6rpx 16rpx rgba(0,0,0,0.08);
+  transition: all 0.3s;
 }
 
-.category-item.active .category-icon {
-  background: rgba(255,255,255,0.2);
-  color: #fff;
-  box-shadow: none;
+.category-icon.active {
+  background: #fff;
+  box-shadow: 0 8rpx 20rpx rgba(0,0,0,0.12);
 }
 
-.category-name {
-  color: rgba(255,255,255,0.9);
+.category-symbol {
   font-size: 26rpx;
-  font-weight: 500;
+  color: #FF6B00;
+  font-weight: 600;
 }
 
-.category-item.active .category-name {
-  color: #fff;
+/* 快捷功能入口 */
+.quick-actions {
+  display: flex;
+  gap: 20rpx;
+  padding: 30rpx;
+  padding-top: 20rpx;
+}
+
+.action-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 24rpx 20rpx;
+  border-radius: 20rpx;
+  background: #fff;
+  box-shadow: 0 6rpx 20rpx rgba(0,0,0,0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.random-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.group-card {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.action-icon-bg {
+  width: 72rpx;
+  height: 72rpx;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+  backdrop-filter: blur(4rpx);
+}
+
+/* 骰子图标 */
+.dice-icon {
+  position: relative;
+}
+
+.dice-face {
+  width: 40rpx;
+  height: 40rpx;
+  background: #fff;
+  border-radius: 8rpx;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dot {
+  width: 8rpx;
+  height: 8rpx;
+  background: #764ba2;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.dot-1 {
+  top: 8rpx;
+  left: 8rpx;
+}
+
+.dot-2 {
+  bottom: 8rpx;
+  right: 8rpx;
+}
+
+/* 拼单图标 */
+.group-icon {
+  position: relative;
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.person {
+  position: absolute;
+  width: 16rpx;
+  height: 16rpx;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.person::after {
+  content: '';
+  position: absolute;
+  bottom: -10rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22rpx;
+  height: 14rpx;
+  background: #fff;
+  border-radius: 10rpx 10rpx 0 0;
+}
+
+.person-1 {
+  top: 0;
+  left: 0;
+}
+
+.person-2 {
+  top: 0;
+  right: 0;
+}
+
+.person-3 {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.action-info {
+  flex: 1;
+}
+
+.action-title {
+  font-size: 28rpx;
   font-weight: bold;
+  color: #fff;
+  display: block;
+}
+
+.action-desc {
+  font-size: 20rpx;
+  color: rgba(255,255,255,0.85);
+  display: block;
+  margin-top: 4rpx;
+}
+
+.action-arrow {
+  width: 0;
+  height: 0;
+  border-top: 8rpx solid transparent;
+  border-bottom: 8rpx solid transparent;
+  border-left: 10rpx solid rgba(255,255,255,0.6);
+}
+
+/* 特色功能入口 */
+.feature-grid {
+  display: flex;
+  justify-content: space-around;
+  padding: 20rpx 30rpx;
+  background: #fff;
+  margin: 0 0 20rpx 0;
+}
+
+.feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx;
+}
+
+.feature-icon {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12rpx;
+}
+
+.feature-icon.flash-sale {
+  background: linear-gradient(135deg, #FF416C, #FF4B2B);
+}
+
+.feature-icon.ranking {
+  background: linear-gradient(135deg, #FFD200, #F7971E);
+}
+
+.feature-icon.mystery-box {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.feature-icon.community {
+  background: linear-gradient(135deg, #11998e, #38ef7d);
+}
+
+.icon-text {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.feature-name {
+  font-size: 24rpx;
+  color: #333;
+}
+
+/* 筛选栏 */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  margin-right: 40rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.filter-item.active {
+  color: #FF6B00;
+  font-weight: 600;
+}
+
+.filter-arrow {
+  width: 0;
+  height: 0;
+  border-left: 6rpx solid transparent;
+  border-right: 6rpx solid transparent;
+  border-top: 8rpx solid currentColor;
+  margin-left: 8rpx;
+}
+
+.filter-dots {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+  margin-left: 8rpx;
+}
+
+.dot-item {
+  width: 6rpx;
+  height: 6rpx;
+  background: currentColor;
+  border-radius: 50%;
 }
 
 /* 店铺列表 */
 .shop-list {
   flex: 1;
   width: 100%;
+  height: calc(100vh - 560rpx);
   box-sizing: border-box;
-  padding: 30rpx;
-  padding-top: 40rpx;
+  padding: 20rpx 30rpx;
 }
 
 .section-title {
-  margin-bottom: 30rpx;
+  display: flex;
+  align-items: center;
+  margin-bottom: 24rpx;
   padding-left: 10rpx;
 }
 
-.title-text {
-  font-size: 38rpx;
-  font-weight: 800;
-  color: #1a1a2e;
-}
-
-.title-sub {
-  font-size: 24rpx;
-  color: #999;
-  margin-left: 16rpx;
-  font-weight: normal;
-}
-
-/* 店铺卡片 */
-.shop-card {
-  background: #fff;
-  border-radius: 24rpx;
-  margin-bottom: 30rpx;
-  overflow: hidden;
-  box-shadow: 0 8rpx 30rpx rgba(0,0,0,0.06);
-  transition: transform 0.2s;
-}
-
-.shop-card:active {
-  transform: scale(0.98);
-}
-
-.shop-cover {
-  width: 100%;
-  height: 260rpx;
-}
-
-.shop-content {
-  padding: 30rpx;
-}
-
-.shop-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.shop-name {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #1a1a2e;
-}
-
-.shop-badge {
-  background: linear-gradient(135deg, #ff6b35, #f7931e);
-  color: #fff;
-  font-size: 20rpx;
-  padding: 4rpx 12rpx;
-  border-radius: 8rpx;
-  font-weight: 500;
-}
-
-.shop-rating {
-  display: flex;
-  align-items: center;
-  margin-top: 16rpx;
-}
-
-.rating-stars {
-  display: flex;
+.title-icon {
+  width: 6rpx;
+  height: 32rpx;
+  background: linear-gradient(180deg, #FF6B00, #FF9F43);
+  border-radius: 3rpx;
   margin-right: 12rpx;
 }
 
-.star {
-  font-size: 24rpx;
-  color: #eee;
-  margin-right: 2rpx;
+.title-text {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1a1a1a;
 }
 
-.star.filled {
-  color: #ffc107;
-}
-
-.rating-score {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #ff6b35;
-}
-
-.sales-text {
-  font-size: 24rpx;
-  color: #999;
-  margin-left: 20rpx;
-}
-
-.shop-delivery {
-  display: flex;
-  align-items: center;
-  margin-top: 24rpx;
-  padding: 20rpx 0;
-  border-top: 1rpx solid #f7f7f7;
-}
-
-.delivery-item {
-  display: flex;
-  align-items: center;
-}
-
-.delivery-label {
+.title-sub {
   font-size: 22rpx;
   color: #999;
-  margin-right: 6rpx;
+  margin-left: 12rpx;
+  font-weight: normal;
 }
 
-.delivery-value {
-  font-size: 24rpx;
-  color: #333;
-  font-weight: 600;
-}
-
-.delivery-divider {
-  width: 2rpx;
-  height: 20rpx;
-  background: #eee;
-  margin: 0 20rpx;
-}
-
-.shop-tags {
-  display: flex;
-  gap: 16rpx;
-  margin-top: 10rpx;
-}
-
-.promo-tag {
-  font-size: 20rpx;
-  color: #ff6b35;
-  background: #fff0eb;
-  padding: 6rpx 14rpx;
-  border-radius: 8rpx;
-}
-
-.new-tag {
-  font-size: 20rpx;
-  color: #2da44e;
-  background: #e6ffed;
-  padding: 6rpx 14rpx;
-  border-radius: 8rpx;
-}
-
-.feature-tag {
-  font-size: 20rpx;
-  color: #0969da;
-  background: #ddf4ff;
-  padding: 6rpx 14rpx;
-  border-radius: 8rpx;
-}
-
-/* 空状态 */
-.empty-state {
+/* 骨架屏列表 */
+.skeleton-list {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 120rpx 0;
+  gap: 24rpx;
 }
 
-.empty-icon {
-  font-size: 100rpx;
-  margin-bottom: 24rpx;
+.skeleton-item {
+  display: flex;
+  gap: 24rpx;
+  background: #fff;
+  padding: 24rpx;
+  border-radius: 20rpx;
 }
 
-.empty-text {
-  font-size: 32rpx;
-  color: #333;
-  margin-bottom: 12rpx;
+.skeleton-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
 }
 
-.empty-hint {
-  font-size: 26rpx;
-  color: #999;
+/* 商家列表 */
+.merchant-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
 }
 
 .safe-bottom {

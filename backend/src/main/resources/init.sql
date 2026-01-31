@@ -346,6 +346,195 @@ INSERT INTO `system_config` (`config_key`, `config_value`, `description`) VALUES
 ('order_timeout_minutes', '15', '订单支付超时时间(分钟)'),
 ('accept_timeout_minutes', '10', '商家接单超时时间(分钟)');
 
+-- 签到记录表
+CREATE TABLE IF NOT EXISTS `check_in` (
+    `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `user_id` BIGINT NOT NULL COMMENT '用户ID',
+    `check_in_date` DATE NOT NULL COMMENT '签到日期',
+    `points_earned` INT DEFAULT 10 COMMENT '获得积分',
+    `continuous_days` INT DEFAULT 1 COMMENT '连续签到天数',
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY `uk_user_date` (`user_id`, `check_in_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='签到记录表';
+
+-- 秒杀活动表
+CREATE TABLE IF NOT EXISTS `flash_sale` (
+    `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `dish_id` BIGINT NOT NULL COMMENT '菜品ID',
+    `shop_id` BIGINT NOT NULL COMMENT '店铺ID',
+    `original_price` DECIMAL(10,2) NOT NULL COMMENT '原价',
+    `sale_price` DECIMAL(10,2) NOT NULL COMMENT '秒杀价',
+    `stock` INT NOT NULL COMMENT '库存',
+    `sold` INT DEFAULT 0 COMMENT '已售',
+    `start_time` DATETIME NOT NULL COMMENT '开始时间',
+    `end_time` DATETIME NOT NULL COMMENT '结束时间',
+    `status` TINYINT DEFAULT 1 COMMENT '状态: 0-未开始, 1-进行中, 2-已结束',
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted` TINYINT DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='秒杀活动表';
+
+-- 秒杀订单表
+CREATE TABLE IF NOT EXISTS `flash_sale_order` (
+    `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `flash_sale_id` BIGINT NOT NULL COMMENT '秒杀活动ID',
+    `user_id` BIGINT NOT NULL COMMENT '用户ID',
+    `order_id` BIGINT COMMENT '关联订单ID',
+    `status` TINYINT DEFAULT 0 COMMENT '状态: 0-待支付, 1-已支付, 2-已取消',
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='秒杀订单表';
+
+-- 盲盒配置表
+CREATE TABLE IF NOT EXISTS `mystery_box` (
+    `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL COMMENT '盲盒名称',
+    `type` TINYINT DEFAULT 1 COMMENT '类型: 1-早餐, 2-午餐, 3-下午茶, 4-晚餐',
+    `price` DECIMAL(10,2) NOT NULL COMMENT '售价',
+    `original_price` DECIMAL(10,2) NOT NULL COMMENT '原价',
+    `description` VARCHAR(255) COMMENT '描述',
+    `shop_id` BIGINT COMMENT '店铺ID(NULL表示平台盲盒)',
+    `dish_count` INT DEFAULT 3 COMMENT '菜品数量',
+    `status` TINYINT DEFAULT 1 COMMENT '状态: 0-下架, 1-上架',
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted` TINYINT DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='盲盒配置表';
+
+-- 盲盒菜品池
+CREATE TABLE IF NOT EXISTS `mystery_box_dish` (
+    `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `box_id` BIGINT NOT NULL COMMENT '盲盒ID',
+    `dish_id` BIGINT NOT NULL COMMENT '菜品ID',
+    `weight` INT DEFAULT 1 COMMENT '权重'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='盲盒菜品池';
+
+-- 用户口味偏好表
+CREATE TABLE IF NOT EXISTS `user_preference` (
+    `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `user_id` BIGINT NOT NULL COMMENT '用户ID',
+    `preference_type` VARCHAR(50) NOT NULL COMMENT '偏好类型: spicy/sweet/sour/salty/category',
+    `preference_value` VARCHAR(100) NOT NULL COMMENT '偏好值',
+    `score` INT DEFAULT 0 COMMENT '偏好分数',
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY `uk_user_pref` (`user_id`, `preference_type`, `preference_value`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户口味偏好表';
+
+-- 动态表
+CREATE TABLE IF NOT EXISTS `post` (
+    `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `user_id` BIGINT NOT NULL COMMENT '用户ID',
+    `content` TEXT COMMENT '内容',
+    `images` JSON COMMENT '图片列表',
+    `dish_id` BIGINT COMMENT '关联菜品ID',
+    `shop_id` BIGINT COMMENT '关联店铺ID',
+    `order_id` BIGINT COMMENT '关联订单ID',
+    `likes` INT DEFAULT 0 COMMENT '点赞数',
+    `comments` INT DEFAULT 0 COMMENT '评论数',
+    `status` TINYINT DEFAULT 1 COMMENT '状态: 0-已删除, 1-正常',
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted` TINYINT DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='动态表';
+
+-- 点赞表
+CREATE TABLE IF NOT EXISTS `post_like` (
+    `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `post_id` BIGINT NOT NULL COMMENT '动态ID',
+    `user_id` BIGINT NOT NULL COMMENT '用户ID',
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY `uk_post_user` (`post_id`, `user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='点赞表';
+
+-- 评论表
+CREATE TABLE IF NOT EXISTS `post_comment` (
+    `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `post_id` BIGINT NOT NULL COMMENT '动态ID',
+    `user_id` BIGINT NOT NULL COMMENT '用户ID',
+    `content` VARCHAR(500) NOT NULL COMMENT '评论内容',
+    `parent_id` BIGINT COMMENT '父评论ID',
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='评论表';
+
+-- 营销活动表
+CREATE TABLE IF NOT EXISTS `marketing_campaign` (
+    `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `shop_id` BIGINT NOT NULL COMMENT '店铺ID',
+    `name` VARCHAR(100) NOT NULL COMMENT '活动名称',
+    `type` TINYINT DEFAULT 1 COMMENT '类型: 1-流失召回, 2-新品推广, 3-节日活动',
+    `target_users` JSON COMMENT '目标用户条件',
+    `coupon_id` BIGINT COMMENT '关联优惠券ID',
+    `message` VARCHAR(500) COMMENT '推送消息',
+    `status` TINYINT DEFAULT 0 COMMENT '状态: 0-草稿, 1-待发送, 2-已发送',
+    `send_time` DATETIME COMMENT '发送时间',
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted` TINYINT DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='营销活动表';
+
+-- 库存记录表
+CREATE TABLE IF NOT EXISTS `inventory` (
+    `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `shop_id` BIGINT NOT NULL COMMENT '店铺ID',
+    `name` VARCHAR(100) NOT NULL COMMENT '物料名称',
+    `unit` VARCHAR(20) COMMENT '单位',
+    `quantity` DECIMAL(10,2) DEFAULT 0 COMMENT '当前数量',
+    `warning_threshold` DECIMAL(10,2) DEFAULT 10 COMMENT '预警阈值',
+    `status` TINYINT DEFAULT 1 COMMENT '状态: 0-停用, 1-正常',
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted` TINYINT DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='库存记录表';
+
+-- 库存变动记录
+CREATE TABLE IF NOT EXISTS `inventory_log` (
+    `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `inventory_id` BIGINT NOT NULL COMMENT '库存ID',
+    `change_type` TINYINT COMMENT '变动类型: 1-入库, 2-出库, 3-盘点',
+    `change_quantity` DECIMAL(10,2) COMMENT '变动数量',
+    `remark` VARCHAR(255) COMMENT '备注',
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='库存变动记录';
+
+-- 系统公告表
+CREATE TABLE IF NOT EXISTS `announcement` (
+    `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `title` VARCHAR(200) NOT NULL COMMENT '标题',
+    `content` TEXT COMMENT '内容',
+    `type` TINYINT DEFAULT 1 COMMENT '类型: 1-系统公告, 2-活动通知, 3-维护通知',
+    `target` TINYINT DEFAULT 0 COMMENT '目标: 0-全部, 1-用户, 2-商家',
+    `is_popup` TINYINT DEFAULT 0 COMMENT '是否弹窗: 0-否, 1-是',
+    `start_time` DATETIME COMMENT '开始时间',
+    `end_time` DATETIME COMMENT '结束时间',
+    `status` TINYINT DEFAULT 0 COMMENT '状态: 0-草稿, 1-已发布',
+    `created_by` BIGINT COMMENT '创建人ID',
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted` TINYINT DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统公告表';
+
+-- 平台活动表
+CREATE TABLE IF NOT EXISTS `platform_activity` (
+    `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL COMMENT '活动名称',
+    `description` TEXT COMMENT '活动描述',
+    `banner` VARCHAR(255) COMMENT '活动横幅图',
+    `type` TINYINT DEFAULT 1 COMMENT '类型: 1-满减活动, 2-折扣活动, 3-免配送费',
+    `rules` JSON COMMENT '活动规则',
+    `start_time` DATETIME COMMENT '开始时间',
+    `end_time` DATETIME COMMENT '结束时间',
+    `status` TINYINT DEFAULT 0 COMMENT '状态: 0-草稿, 1-进行中, 2-已结束',
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted` TINYINT DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='平台活动表';
+
+-- 扩展订单表支持预约
+ALTER TABLE `order` ADD COLUMN IF NOT EXISTS `is_scheduled` TINYINT DEFAULT 0 COMMENT '是否预约订单';
+ALTER TABLE `order` ADD COLUMN IF NOT EXISTS `scheduled_time` DATETIME COMMENT '预约时间';
+ALTER TABLE `order` ADD COLUMN IF NOT EXISTS `pickup_code` VARCHAR(10) COMMENT '取餐码';
+
+-- 扩展用户表支持积分
+ALTER TABLE `user` ADD COLUMN IF NOT EXISTS `points` INT DEFAULT 0 COMMENT '积分';
+
 -- 创建索引
 CREATE INDEX idx_user_phone ON `user`(`phone`);
 CREATE INDEX idx_merchant_status ON `merchant`(`status`);
@@ -358,3 +547,7 @@ CREATE INDEX idx_order_status ON `order`(`status`);
 CREATE INDEX idx_order_created ON `order`(`created_at`);
 CREATE INDEX idx_cart_user ON `cart`(`user_id`);
 CREATE INDEX idx_review_shop ON `review`(`shop_id`);
+CREATE INDEX idx_check_in_user ON `check_in`(`user_id`);
+CREATE INDEX idx_flash_sale_shop ON `flash_sale`(`shop_id`);
+CREATE INDEX idx_post_user ON `post`(`user_id`);
+CREATE INDEX idx_inventory_shop ON `inventory`(`shop_id`);

@@ -2,30 +2,15 @@
   <div class="login-container">
     <div class="login-box">
       <h1 class="title">校园订餐系统</h1>
-      <el-tabs v-model="activeTab" class="tabs">
-        <el-tab-pane label="管理员登录" name="admin">
-          <el-form :model="form" :rules="rules" ref="formRef">
-            <el-form-item prop="username">
-              <el-input v-model="form.username" prefix-icon="User" placeholder="用户名" />
-            </el-form-item>
-            <el-form-item prop="password">
-              <el-input v-model="form.password" prefix-icon="Lock" type="password" placeholder="密码" show-password />
-            </el-form-item>
-            <el-button type="primary" class="login-btn" @click="handleLogin" :loading="loading">登 录</el-button>
-          </el-form>
-        </el-tab-pane>
-        <el-tab-pane label="商家登录" name="merchant">
-          <el-form :model="form" :rules="rules" ref="merchantFormRef">
-            <el-form-item prop="username">
-              <el-input v-model="form.username" prefix-icon="User" placeholder="商家账号" />
-            </el-form-item>
-            <el-form-item prop="password">
-              <el-input v-model="form.password" prefix-icon="Lock" type="password" placeholder="密码" show-password />
-            </el-form-item>
-            <el-button type="primary" class="login-btn" @click="handleLogin" :loading="loading">登 录</el-button>
-          </el-form>
-        </el-tab-pane>
-      </el-tabs>
+      <el-form :model="form" :rules="rules" ref="formRef">
+        <el-form-item prop="username">
+          <el-input v-model="form.username" prefix-icon="User" placeholder="商家账号" />
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input v-model="form.password" prefix-icon="Lock" type="password" placeholder="密码" show-password />
+        </el-form-item>
+        <el-button type="primary" class="login-btn" @click="handleLogin" :loading="loading">登 录</el-button>
+      </el-form>
     </div>
   </div>
 </template>
@@ -40,7 +25,6 @@ import request from '../api/request'
 const router = useRouter()
 const userStore = useUserStore()
 
-const activeTab = ref('admin')
 const loading = ref(false)
 const formRef = ref()
 const form = reactive({ username: '', password: '' })
@@ -52,11 +36,11 @@ const rules = {
 const handleLogin = async () => {
   loading.value = true
   try {
-    const userType = activeTab.value
+    const userType = 'merchant'
     const res = await request.post('/auth/login', { ...form, userType })
     userStore.setLogin(res.data, userType)
     ElMessage.success('登录成功')
-    router.push(userType === 'admin' ? '/admin' : '/merchant')
+    router.push('/merchant')
   } catch (e) {
     console.error(e)
   } finally {
@@ -105,7 +89,6 @@ const handleLogin = async () => {
   font-size: 28px;
   font-weight: 700;
 }
-.tabs { margin-top: 20px; }
 .login-btn {
   width: 100%;
   height: 45px;

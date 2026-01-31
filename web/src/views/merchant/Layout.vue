@@ -22,6 +22,18 @@
           <el-icon><List /></el-icon>
           <span>订单管理</span>
         </el-menu-item>
+        <el-menu-item index="/merchant/analytics">
+          <el-icon><TrendCharts /></el-icon>
+          <span>数据分析</span>
+        </el-menu-item>
+        <el-menu-item index="/merchant/marketing">
+          <el-icon><Discount /></el-icon>
+          <span>营销活动</span>
+        </el-menu-item>
+        <el-menu-item index="/merchant/inventory">
+          <el-icon><Box /></el-icon>
+          <span>库存管理</span>
+        </el-menu-item>
       </el-menu>
     </el-aside>
     <el-container>

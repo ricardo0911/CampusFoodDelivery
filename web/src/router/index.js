@@ -14,7 +14,12 @@ const routes = [
             { path: 'dashboard', name: 'AdminDashboard', component: () => import('../views/admin/Dashboard.vue') },
             { path: 'users', name: 'AdminUsers', component: () => import('../views/admin/Users.vue') },
             { path: 'merchants', name: 'AdminMerchants', component: () => import('../views/admin/Merchants.vue') },
-            { path: 'orders', name: 'AdminOrders', component: () => import('../views/admin/Orders.vue') }
+            { path: 'orders', name: 'AdminOrders', component: () => import('../views/admin/Orders.vue') },
+            { path: 'data-screen', name: 'AdminDataScreen', component: () => import('../views/admin/DataScreen.vue') },
+            { path: 'announcements', name: 'AdminAnnouncements', component: () => import('../views/admin/Announcements.vue') },
+            { path: 'activities', name: 'AdminActivities', component: () => import('../views/admin/Activities.vue') },
+            { path: 'complaints', name: 'AdminComplaints', component: () => import('../views/admin/Complaints.vue') },
+            { path: 'finance', name: 'AdminFinance', component: () => import('../views/admin/Finance.vue') }
         ]
     },
     {
@@ -25,7 +30,10 @@ const routes = [
             { path: 'dashboard', name: 'MerchantDashboard', component: () => import('../views/merchant/Dashboard.vue') },
             { path: 'shop', name: 'MerchantShop', component: () => import('../views/merchant/Shop.vue') },
             { path: 'dishes', name: 'MerchantDishes', component: () => import('../views/merchant/Dishes.vue') },
-            { path: 'orders', name: 'MerchantOrders', component: () => import('../views/merchant/Orders.vue') }
+            { path: 'orders', name: 'MerchantOrders', component: () => import('../views/merchant/Orders.vue') },
+            { path: 'analytics', name: 'MerchantAnalytics', component: () => import('../views/merchant/Analytics.vue') },
+            { path: 'marketing', name: 'MerchantMarketing', component: () => import('../views/merchant/Marketing.vue') },
+            { path: 'inventory', name: 'MerchantInventory', component: () => import('../views/merchant/Inventory.vue') }
         ]
     },
     { path: '/', redirect: '/login' }

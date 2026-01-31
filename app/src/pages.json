@@ -35,6 +35,80 @@
             "style": {
                 "navigationBarTitleText": "个人中心"
             }
+        },
+        {
+            "path": "pages/random-pick/random-pick",
+            "style": {
+                "navigationBarTitleText": "今天吃什么",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/group-order/group-order",
+            "style": {
+                "navigationBarTitleText": "拼单",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/badges/badges",
+            "style": {
+                "navigationBarTitleText": "我的徽章",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/checkout/checkout",
+            "style": {
+                "navigationBarTitleText": "确认订单"
+            }
+        },
+        {
+            "path": "pages/check-in/check-in",
+            "style": {
+                "navigationBarTitleText": "每日签到",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/ranking/ranking",
+            "style": {
+                "navigationBarTitleText": "美食排行榜",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/flash-sale/flash-sale",
+            "style": {
+                "navigationBarTitleText": "限时秒杀",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/mystery-box/mystery-box",
+            "style": {
+                "navigationBarTitleText": "美食盲盒",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/community/community",
+            "style": {
+                "navigationBarTitleText": "美食社区",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/community/post-detail",
+            "style": {
+                "navigationBarTitleText": "动态详情"
+            }
+        },
+        {
+            "path": "pages/community/create-post",
+            "style": {
+                "navigationBarTitleText": "发布动态"
+            }
         }
     ],
     "globalStyle": {

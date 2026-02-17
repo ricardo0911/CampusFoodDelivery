@@ -131,6 +131,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { get } from '@/utils/request'
+import { getShopList } from '@/api/shop'
+import { getTodayNutrition } from '@/api/nutrition'
 
 const keyword = ref('')
 const shopList = ref([])
@@ -190,12 +192,12 @@ const loadShops = async () => {
   try {
     const params = { keyword: keyword.value }
     // if (activeCategory.value) params.category = activeCategory.value
-    
+
     // 尝试调用接口
     // 如果是点击分类，且处于演示环境，优先检查模拟数据能否满足
     // 这里我们采取混合策略：先看接口是否返回有效数据
-    const res = await get('/public/shop/list', params)
-    
+    const res = await getShopList(params)
+
     let validRecords = []
     if (res.data && res.data.records) {
       // 如果后端没有正确过滤（根据参数），我们尝试前端二次验证
@@ -215,7 +217,7 @@ const loadShops = async () => {
       // 接口返回空，或失败，使用模拟数据
       loadMockShops()
     }
-  } catch (e) { 
+  } catch (e) {
     // 静默处理错误，使用模拟数据
     loadMockShops()
   }

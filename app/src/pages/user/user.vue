@@ -136,16 +136,17 @@ const loadUserInfo = () => {
 }
 
 const goLogin = () => { uni.navigateTo({ url: '/pages/login/login' }) }
-const goSettings = () => { uni.showToast({ title: '功能开发中', icon: 'none' }) }
+const goSettings = () => { uni.navigateTo({ url: '/pages/settings/settings' }) }
 const goOrders = () => { uni.switchTab({ url: '/pages/order/order' }) }
 const goOrdersByStatus = (status) => { uni.switchTab({ url: '/pages/order/order' }) }
 const goReview = () => { uni.showToast({ title: '功能开发中', icon: 'none' }) }
-const goAddress = () => { uni.showToast({ title: '功能开发中', icon: 'none' }) }
-const goFavorite = () => { uni.showToast({ title: '功能开发中', icon: 'none' }) }
-const goCoupon = () => { uni.showToast({ title: '功能开发中', icon: 'none' }) }
+const goAddress = () => { uni.navigateTo({ url: '/pages/address/list' }) }
+const goFavorite = () => { uni.navigateTo({ url: '/pages/favorite/list' }) }
+const goCoupon = () => { uni.navigateTo({ url: '/pages/coupon/list' }) }
 const goHelp = () => { uni.showToast({ title: '功能开发中', icon: 'none' }) }
-const goFeedback = () => { uni.showToast({ title: '功能开发中', icon: 'none' }) }
-const goAbout = () => { uni.showToast({ title: '功能开发中', icon: 'none' }) }
+const goFeedback = () => { uni.navigateTo({ url: '/pages/feedback/feedback' }) }
+const goAbout = () => { uni.navigateTo({ url: '/pages/about/about' }) }
+const goRecharge = () => { uni.navigateTo({ url: '/pages/recharge/recharge' }) }
 
 const handleLogout = () => {
   uni.showModal({

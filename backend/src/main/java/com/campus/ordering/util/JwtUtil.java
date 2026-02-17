@@ -60,4 +60,18 @@ public class JwtUtil {
             return false;
         }
     }
+
+    /**
+     * 刷新Token
+     */
+    public String refreshToken(String oldToken) {
+        try {
+            Claims claims = getClaimsFromToken(oldToken);
+            Long userId = claims.get("userId", Long.class);
+            String userType = claims.get("userType", String.class);
+            return generateToken(userId, userType);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

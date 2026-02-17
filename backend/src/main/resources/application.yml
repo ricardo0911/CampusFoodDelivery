@@ -25,7 +25,7 @@ mybatis-plus:
       logic-not-delete-value: 0
 
 jwt:
-  secret: campus-ordering-secret-key-2024
+  secret: cAmpUs-0rDer1nG-sYsTeM-2024-sEcReT-kEy-fOr-JwT-tOkEn-sIgNiNg-aLgOrItHm
   expiration: 86400000  # 24小时
 
 upload:

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout app/src/pages/index/index.vue)",
+      "Bash(mvn compile -q)"
+    ]
+  }
+}

@@ -1,6 +1,7 @@
 package com.campus.ordering.controller;
 
 import com.campus.ordering.dto.LoginDTO;
+import com.campus.ordering.dto.MerchantRegisterDTO;
 import com.campus.ordering.dto.RegisterDTO;
 import com.campus.ordering.entity.Merchant;
 import com.campus.ordering.entity.Shop;
@@ -9,12 +10,18 @@ import com.campus.ordering.service.MerchantService;
 import com.campus.ordering.service.ShopService;
 import com.campus.ordering.service.UserService;
 import com.campus.ordering.util.JwtUtil;
+import com.campus.ordering.util.PasswordUtil;
 import com.campus.ordering.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.campus.ordering.util.PasswordUtil.encode;
+import static com.campus.ordering.util.PasswordUtil.isEncoded;
+import static com.campus.ordering.util.PasswordUtil.matches;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -36,7 +43,7 @@ public class AuthController {
      * 用户登录
      */
     @PostMapping("/login")
-    public Result<?> login(@RequestBody LoginDTO dto) {
+    public Result<?> login(@Valid @RequestBody LoginDTO dto) {
         String userType = dto.getUserType();
 
         if ("user".equals(userType) || "admin".equals(userType)) {
@@ -44,7 +51,9 @@ public class AuthController {
             if (user == null) {
                 return Result.error("用户不存在");
             }
-            if (!dto.getPassword().equals(user.getPassword())) {
+            // 兼容新旧密码格式
+            if (!matches(dto.getPassword(), user.getPassword()) &&
+                !dto.getPassword().equals(user.getPassword())) {
                 return Result.error("密码错误");
             }
             if (user.getStatus() == 0) {
@@ -66,7 +75,9 @@ public class AuthController {
             if (merchant == null) {
                 return Result.error("商家账号不存在");
             }
-            if (!dto.getPassword().equals(merchant.getPassword())) {
+            // 兼容新旧密码格式
+            if (!matches(dto.getPassword(), merchant.getPassword()) &&
+                !dto.getPassword().equals(merchant.getPassword())) {
                 return Result.error("密码错误");
             }
             if (merchant.getStatus() == 0) {
@@ -97,7 +108,7 @@ public class AuthController {
      * 用户注册
      */
     @PostMapping("/register")
-    public Result<?> register(@RequestBody RegisterDTO dto) {
+    public Result<?> register(@Valid @RequestBody RegisterDTO dto) {
         if (userService.findByUsername(dto.getUsername()) != null) {
             return Result.error("用户名已存在");
         }
@@ -107,7 +118,7 @@ public class AuthController {
 
         User user = new User();
         user.setUsername(dto.getUsername());
-        user.setPassword(dto.getPassword());
+        user.setPassword(encode(dto.getPassword()));
         user.setNickname(dto.getNickname() != null ? dto.getNickname() : dto.getUsername());
         user.setPhone(dto.getPhone());
         user.setStudentId(dto.getStudentId());
@@ -128,12 +139,12 @@ public class AuthController {
      * 商家注册
      */
     @PostMapping("/merchant/register")
-    public Result<?> merchantRegister(@RequestBody Map<String, String> params) {
-        String username = params.get("username");
-        String password = params.get("password");
-        String contactName = params.get("contactName");
-        String phone = params.get("phone");
-        String shopName = params.get("shopName");
+    public Result<?> merchantRegister(@Valid @RequestBody MerchantRegisterDTO dto) {
+        String username = dto.getUsername();
+        String password = dto.getPassword();
+        String contactName = dto.getContactName();
+        String phone = dto.getPhone();
+        String shopName = dto.getShopName();
 
         if (merchantService.findByUsername(username) != null) {
             return Result.error("商家用户名已存在");
@@ -141,7 +152,7 @@ public class AuthController {
 
         Merchant merchant = new Merchant();
         merchant.setUsername(username);
-        merchant.setPassword(password);
+        merchant.setPassword(encode(password));
         merchant.setContactName(contactName);
         merchant.setPhone(phone);
         merchant.setStatus(0); // 待审核
